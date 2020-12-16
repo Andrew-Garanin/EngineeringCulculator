@@ -136,3 +136,25 @@ void CEngineeringCulculatorDoc::Dump(CDumpContext& dc) const
 
 
 // Команды CEngineeringCulculatorDoc
+void CEngineeringCulculatorDoc::PushElement(CString Val, int WhatThis)
+{
+	Element* el = new Element(Val, WhatThis);
+	stack.Add(el);
+}
+
+Element* CEngineeringCulculatorDoc::PopElement(int index)
+{
+	if (index < 0 || index > stack.GetUpperBound())
+		return 0;
+	else
+	{
+		Element* el = stack.GetAt(index);
+		stack.RemoveAt(index);
+		return el;
+	}
+}
+
+int CEngineeringCulculatorDoc::getNumElements()
+{
+	return stack.GetSize();
+}

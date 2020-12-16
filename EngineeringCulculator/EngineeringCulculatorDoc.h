@@ -4,10 +4,36 @@
 
 
 #pragma once
-
+class Element : public CObject
+{
+protected:
+	CString value;
+	int whatThis;
+public:
+	Element(CString Val, int WhatThis)
+	{
+		value = Val;
+		whatThis = WhatThis;
+	}
+	CString getValue()
+	{
+		return this->value;
+	}
+	int getWhatThis()
+	{
+		return this->whatThis;
+	}
+};
 
 class CEngineeringCulculatorDoc : public CDocument
 {
+protected:
+	CTypedPtrArray <CObArray, Element*> stack;
+public:
+	void PushElement(CString Val, int WhatThis);
+	Element *PopElement(int index);
+	int getNumElements();
+
 protected: // создать только из сериализации
 	CEngineeringCulculatorDoc() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorDoc)

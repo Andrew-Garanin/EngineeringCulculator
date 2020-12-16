@@ -35,7 +35,6 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTN9, &CEngineeringCulculatorView::OnBnClickedBtn9)
 	ON_BN_CLICKED(IDC_BTN0, &CEngineeringCulculatorView::OnBnClickedBtn0)
 	ON_BN_CLICKED(IDC_BTNCOM, &CEngineeringCulculatorView::OnBnClickedBtncom)
-//	ON_BN_CLICKED(IDC_BUTTON1, &CEngineeringCulculatorView::OnBnClickedButton1)
 ON_BN_CLICKED(IDC_BTNPLUS, &CEngineeringCulculatorView::OnBnClickedBtnplus)
 ON_BN_CLICKED(IDC_BTNMINUS, &CEngineeringCulculatorView::OnBnClickedBtnminus)
 ON_BN_CLICKED(IDC_BTNMULTIPLY, &CEngineeringCulculatorView::OnBnClickedBtnmultiply)
@@ -133,6 +132,12 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 		numberStr.Append(L"1");
 	}
 	m_Number.SetWindowTextW(numberStr);
+	currentStr.Append(L"1");
+	/*CString MyString;
+	GetDocument()->addElement(L"-", 1);
+
+	MyString = GetDocument()->getElement(GetDocument()->getNumElements() - 1)->getValue();
+	MessageBox(MyString);*/
 }
 
 
@@ -362,6 +367,11 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 		enterStr.Append(L"+");
 		m_Edit.SetWindowTextW(enterStr);
 	}
+	CString MyString;
+	GetDocument()->PushElement(currentStr, 1);
+
+	MyString = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+	MessageBox(MyString);
 }
 
 

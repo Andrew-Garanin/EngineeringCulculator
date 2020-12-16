@@ -4,13 +4,52 @@
 
 #pragma once
 
+//class Element : public CObject
+//{
+//protected:
+//	CString value;
+//	int whatThis;
+//public:
+//	Element(CString Val, int WhatThis)
+//	{
+//		value = Val;
+//		whatThis = WhatThis;
+//	}
+//	CString getValue()
+//	{
+//		return this->value;
+//	}
+//	int getWhatThis()
+//	{
+//		return this->whatThis;
+//	}
+//};
+//class Stack : CObArray
+//{
+//protected:
+//	CArray<Element, Element>  m_Array;
+//public:
+//	Stack()
+//	{
+//		m_Array.SetSize(1000);
+//	}
+//
+//	Element getElement(int index)
+//	{
+//		return m_Array.GetAt(index);
+//	}
+//};
+
 class CEngineeringCulculatorView : public CFormView
 {
 public:
-	CString enterStr=L"";
-	CString numberStr = L"0";
-	int isCommaInNumber=0;
-	int action=0;
+	CString enterStr=L"";//Верхняя строка
+	CString numberStr = L"0";//Нижняя строка
+	int isCommaInNumber=0;//Индикатор запятой в числе
+	int action=0;//происходит ли выполнение операции
+	int prior = 4;//Приоритет последней операции в стеке
+	CString currentStr=L"0";//Вводимая в текущий момент строка
+
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
