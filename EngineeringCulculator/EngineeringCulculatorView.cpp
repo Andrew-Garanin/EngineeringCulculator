@@ -27,6 +27,12 @@ CString Calculate(CString num1, CString oper, CString num2)
 		str.Format(L"%f", Num1 + Num2);
 		return str;
 	}
+	if (oper == "*")
+	{
+		CString str;
+		str.Format(L"%f", Num1 * Num2);
+		return str;
+	}
 }
 // CEngineeringCulculatorView
 
@@ -138,6 +144,11 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 				GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
 				prior = 1;
 			}
+			if (action == 3)
+			{
+				GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+				prior = 2;
+			}
 			numberStr = L"";
 			currentStr.Append(L"1");
 			numberStr.Append(L"1");
@@ -150,7 +161,6 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 			currentStr.Append(L"1");
 		}
 	m_Number.SetWindowTextW(numberStr);
-	//currentStr.Append(L"1");
 }
 
 
@@ -160,10 +170,22 @@ void CEngineeringCulculatorView::OnBnClickedBtn2()
 	if (numberStr == L"0")
 	{
 		numberStr = L"2";
+		currentStr = L"2";
 	}
 	else if (action)
 	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
 		numberStr = L"";
+		currentStr.Append(L"2");
 		numberStr.Append(L"2");
 		action = 0;
 		isCommaInNumber = 0;
@@ -171,6 +193,7 @@ void CEngineeringCulculatorView::OnBnClickedBtn2()
 	else
 	{
 		numberStr.Append(L"2");
+		currentStr.Append(L"2");
 	}
 	m_Number.SetWindowTextW(numberStr);
 }
@@ -375,7 +398,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 		enterStr.Append(L"+");
 		action = 1;
 		m_Edit.SetWindowTextW(enterStr);
-		if (prior <= 1)
+		if (prior >= 1)
 			{
 				//считаем результат и его в стек
 				CString num1= GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
@@ -406,11 +429,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 			enterStr.SetAt(0,*"(");
 		}
 	}
-	//CString MyString;
-	//GetDocument()->PushElement(currentStr, 1);
-
-	//MyString = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-	//MessageBox(MyString);
 }
 
 
@@ -436,6 +454,45 @@ void CEngineeringCulculatorView::OnBnClickedBtnminus()
 void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	if (!action)
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		currentStr = L"";
+		enterStr.Append(numberStr);
+		enterStr.Append(L"*");
+		action = 3;
+		m_Edit.SetWindowTextW(enterStr);
+		if (prior >= 2)
+		{
+			//считаем результат и его в стек
+			CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString rez = Calculate(num1, oper, num2);
+			GetDocument()->PushElement(rez, 1);
+			numberStr = L"";
+			numberStr.Append(rez);
+			m_Number.SetWindowTextW(numberStr);
+		}
+		else
+		{
+
+		}
+	}
+	else if (action)//можно без if
+	{
+		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
+		enterStr.Append(L"*");
+		m_Edit.SetWindowTextW(enterStr);
+		action = 3;
+		if (prior <= 2)
+		{
+			enterStr.Append(L")");
+			for (int i = enterStr.GetLength() - 1; i >= 0; i--)
+				enterStr.SetAt(i + 1, enterStr.GetAt(i));
+			enterStr.SetAt(0, *"(");
+		}
+	}
 }
 
 
