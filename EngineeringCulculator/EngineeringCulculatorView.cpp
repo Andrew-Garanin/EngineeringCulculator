@@ -157,8 +157,14 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 		}
 	else
 		{
-			numberStr.Append(L"1");
-			currentStr.Append(L"1");
+			if (wasIql)
+			{
+				wasIql = 0;
+				numberStr = L"";
+				currentStr = L"";
+			}
+				numberStr.Append(L"1");
+				currentStr.Append(L"1");
 		}
 	m_Number.SetWindowTextW(numberStr);
 }
@@ -380,7 +386,8 @@ void CEngineeringCulculatorView::OnBnClickedBtncom()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (numberStr.GetLength()!= 0 && isCommaInNumber == 0)
 	{
-		numberStr.Append(L",");
+		numberStr.Append(L".");
+		currentStr.Append(L".");
 		isCommaInNumber = 1;
 		m_Number.SetWindowTextW(numberStr);
 	}
@@ -505,6 +512,7 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 void CEngineeringCulculatorView::OnBnClickedBtneql()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	wasIql = 1;
 	if (currentStr != "")
 		GetDocument()->PushElement(currentStr, 1);
 	enterStr = L"";//Верхняя строка
@@ -526,6 +534,7 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		--Index;
 		rez = Calculate(num1, oper, num2);
 		GetDocument()->PushElement(rez, 1);
+		++Index;
 	}
 	m_Number.SetWindowTextW(rez);
 	numberStr = rez;//Нижняя строка
