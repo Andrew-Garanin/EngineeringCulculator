@@ -17,7 +17,17 @@
 #define new DEBUG_NEW
 #endif
 
-
+CString Calculate(CString num1, CString oper, CString num2)
+{
+	double Num1= _wtof( num1 );
+	double Num2 = _wtof(num2);
+	if (oper == "+")
+	{
+		CString str;
+		str.Format(L"%f", Num1 + Num2);
+		return str;
+	}
+}
 // CEngineeringCulculatorView
 
 IMPLEMENT_DYNCREATE(CEngineeringCulculatorView, CFormView)
@@ -117,27 +127,30 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	if (numberStr == L"0") 
-	{
-		numberStr = L"1";
-	}
+		{
+			numberStr = L"1";
+			currentStr = L"1";
+		}
 	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"1");
-		action = 0;
-		isCommaInNumber = 0;
-	}
+		{
+			if (action == 1)
+			{
+				GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+				prior = 1;
+			}
+			numberStr = L"";
+			currentStr.Append(L"1");
+			numberStr.Append(L"1");
+			action = 0;
+			isCommaInNumber = 0;
+		}
 	else
-	{
-		numberStr.Append(L"1");
-	}
+		{
+			numberStr.Append(L"1");
+			currentStr.Append(L"1");
+		}
 	m_Number.SetWindowTextW(numberStr);
-	currentStr.Append(L"1");
-	/*CString MyString;
-	GetDocument()->addElement(L"-", 1);
-
-	MyString = GetDocument()->getElement(GetDocument()->getNumElements() - 1)->getValue();
-	MessageBox(MyString);*/
+	//currentStr.Append(L"1");
 }
 
 
@@ -356,22 +369,48 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
+		GetDocument()->PushElement(currentStr, 1);
+		currentStr = L"";
 		enterStr.Append(numberStr);
 		enterStr.Append(L"+");
 		action = 1;
 		m_Edit.SetWindowTextW(enterStr);
+		if (prior <= 1)
+			{
+				//считаем результат и его в стек
+				CString num1= GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString rez = Calculate(num1, oper, num2);
+				GetDocument()->PushElement(rez, 1);
+				numberStr = L"";
+				numberStr.Append(rez);
+				m_Number.SetWindowTextW(numberStr);
+			}
+		else
+		{
+
+		}
 	}
-	if (action)
+	else if (action)//можно без if
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
 		enterStr.Append(L"+");
 		m_Edit.SetWindowTextW(enterStr);
+		action = 1;
+		if (prior <= 1)
+		{
+			enterStr.Append(L")");
+			for (int i = enterStr.GetLength() - 1; i >= 0; i--)
+				enterStr.SetAt(i+1,enterStr.GetAt(i));
+			enterStr.SetAt(0,*"(");
+		}
 	}
-	CString MyString;
-	GetDocument()->PushElement(currentStr, 1);
+	//CString MyString;
+	//GetDocument()->PushElement(currentStr, 1);
 
-	MyString = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-	MessageBox(MyString);
+	//MyString = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+	//MessageBox(MyString);
 }
 
 
