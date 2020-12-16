@@ -505,4 +505,30 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 void CEngineeringCulculatorView::OnBnClickedBtneql()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	if (currentStr != "")
+		GetDocument()->PushElement(currentStr, 1);
+	enterStr = L"";//Верхняя строка
+	action = 0;//происходит ли выполнение операции
+	prior = 0;//Приоритет последней операции в стеке
+	m_Edit.SetWindowTextW(L"");
+	int Index = GetDocument()->getNumElements()-1;
+	CString num1;
+	CString oper;
+	CString num2;
+	CString rez;
+	while (Index>0)
+	{
+		num1=GetDocument()->PopElement(Index)->getValue();
+		--Index;
+		oper = GetDocument()->PopElement(Index)->getValue();
+		--Index;
+		num2 = GetDocument()->PopElement(Index)->getValue();
+		--Index;
+		rez = Calculate(num1, oper, num2);
+		GetDocument()->PushElement(rez, 1);
+	}
+	m_Number.SetWindowTextW(rez);
+	numberStr = rez;//Нижняя строка
+	currentStr = rez;//Вводимая в текущий момент строка
+	GetDocument()->PopElement(0);
 }

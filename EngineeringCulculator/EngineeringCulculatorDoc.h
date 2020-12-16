@@ -27,7 +27,7 @@ public:
 
 class CEngineeringCulculatorDoc : public CDocument
 {
-protected:
+public://protected
 	CTypedPtrArray <CObArray, Element*> stack;
 public:
 	void PushElement(CString Val, int WhatThis);
