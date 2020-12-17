@@ -46,11 +46,12 @@ public:
 	CString enterStr=L"";//Верхняя строка
 	CString numberStr = L"0";//Нижняя строка
 	int isCommaInNumber=0;//Индикатор запятой в числе
-	int action=0;//происходит ли выполнение операции
+	int action=0;//происходит ли выполнение операции и какой
 	int prior = 0;//Приоритет последней операции в стеке
 	int wasIql = 0;// было ли нажата кнопка равно
 	CString currentStr=L"0";//Вводимая в текущий момент строка
-
+	int wasPushLeftBracket = 0;
+	int wasPushRightBracket = 0;
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -108,6 +109,8 @@ public:
 	afx_msg void OnBnClickedBtndivide();
 	afx_msg void OnBnClickedBtneql();
 	CEdit m_Number;
+	afx_msg void OnBnClickedLeftbracket();
+	afx_msg void OnBnClickedRigthbracket();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp

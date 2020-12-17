@@ -56,6 +56,8 @@ ON_BN_CLICKED(IDC_BTNMINUS, &CEngineeringCulculatorView::OnBnClickedBtnminus)
 ON_BN_CLICKED(IDC_BTNMULTIPLY, &CEngineeringCulculatorView::OnBnClickedBtnmultiply)
 ON_BN_CLICKED(IDC_BTNDIVIDE, &CEngineeringCulculatorView::OnBnClickedBtndivide)
 ON_BN_CLICKED(IDC_BTNEQL, &CEngineeringCulculatorView::OnBnClickedBtneql)
+ON_BN_CLICKED(IDC_LEFTBRACKET, &CEngineeringCulculatorView::OnBnClickedLeftbracket)
+ON_BN_CLICKED(IDC_RIGTHBRACKET, &CEngineeringCulculatorView::OnBnClickedRigthbracket)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -132,53 +134,8 @@ void CEngineeringCulculatorView::OnEnChangeMainfield()
 void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0") 
-		{
-			numberStr = L"1";
-			currentStr = L"1";
-		}
-	else if (action)
-		{
-			if (action == 1)
-			{
-				GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-				prior = 1;
-			}
-			if (action == 3)
-			{
-				GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-				prior = 2;
-			}
-			numberStr = L"";
-			currentStr.Append(L"1");
-			numberStr.Append(L"1");
-			action = 0;
-			isCommaInNumber = 0;
-		}
-	else
-		{
-			if (wasIql)
-			{
-				wasIql = 0;
-				numberStr = L"";
-				currentStr = L"";
-			}
-				numberStr.Append(L"1");
-				currentStr.Append(L"1");
-		}
-	m_Number.SetWindowTextW(numberStr);
-}
 
-
-void CEngineeringCulculatorView::OnBnClickedBtn2()
-{
-	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"2";
-		currentStr = L"2";
-	}
-	else if (action)
+	if (action)
 	{
 		if (action == 1)
 		{
@@ -190,16 +147,77 @@ void CEngineeringCulculatorView::OnBnClickedBtn2()
 			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
-		numberStr = L"";
-		currentStr.Append(L"2");
-		numberStr.Append(L"2");
 		action = 0;
-		isCommaInNumber = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
+
+	if (numberStr == L"0") 
+		{
+			numberStr = L"1";
+			currentStr = L"1";
+		}
+	else 
+		{
+			//numberStr = L"";????????????
+			currentStr.Append(L"1");
+			numberStr.Append(L"1");
+			//action = 0;
+			isCommaInNumber = 0;
+
+			if (wasIql)
+				{
+					wasIql = 0;
+					numberStr = L"1";
+					currentStr = L"1";
+				}
+			//numberStr.Append(L"1");
+			//currentStr.Append(L"1");
+		}
+	m_Number.SetWindowTextW(numberStr);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtn2()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		action = 0;
+	}
+
+	if (numberStr == L"0")
+	{
+		numberStr = L"2";
+		currentStr = L"2";
 	}
 	else
 	{
-		numberStr.Append(L"2");
+		//numberStr = L"";
 		currentStr.Append(L"2");
+		numberStr.Append(L"2");
+		//action = 0;
+		isCommaInNumber = 0;
+
+		if (wasIql)
+		{
+			wasIql = 0;
+			numberStr = L"2";
+			currentStr = L"2";
+		}
+		//numberStr.Append(L"1");
+		//currentStr.Append(L"1");
 	}
 	m_Number.SetWindowTextW(numberStr);
 }
@@ -399,16 +417,23 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		GetDocument()->PushElement(currentStr, 1);
-		currentStr = L"";
-		enterStr.Append(numberStr);
+		if (!wasPushRightBracket)
+		{
+			//wasPushRightBracket = 0;
+			GetDocument()->PushElement(currentStr, 1);
+			enterStr.Append(numberStr);
+		}
+		wasPushRightBracket = 0;
+		//enterStr.Append(numberStr);
 		enterStr.Append(L"+");
-		action = 1;
+		action = 1;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
-		if (prior >= 1)
+		if (!wasPushLeftBracket)
+		{
+			if (prior >= 1)
 			{
 				//считаем результат и его в стек
-				CString num1= GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
@@ -417,12 +442,13 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 				numberStr.Append(rez);
 				m_Number.SetWindowTextW(numberStr);
 			}
+		}
 		else
 		{
-
+			wasPushLeftBracket = 0;
 		}
 	}
-	else if (action)//можно без if
+	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
 		enterStr.Append(L"+");
@@ -513,8 +539,25 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	wasIql = 1;
-	if (currentStr != "")
+	
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		action = 0;
+	}
+
+	if (currentStr != "" && !wasPushRightBracket)
 		GetDocument()->PushElement(currentStr, 1);
+
 	enterStr = L"";//Верхняя строка
 	action = 0;//происходит ли выполнение операции
 	prior = 0;//Приоритет последней операции в стеке
@@ -539,5 +582,94 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 	m_Number.SetWindowTextW(rez);
 	numberStr = rez;//Нижняя строка
 	currentStr = rez;//Вводимая в текущий момент строка
+	wasPushRightBracket = 0;
 	GetDocument()->PopElement(0);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedLeftbracket()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	wasPushLeftBracket = 1;
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		action = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
+	
+	GetDocument()->PushElement(L"(", 1);
+	enterStr.Append(L"(");
+	m_Edit.SetWindowTextW(enterStr);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedRigthbracket()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	//wasPushRightBracket = 1;
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		action = 0;
+	}
+
+	if (!wasPushRightBracket) {
+		GetDocument()->PushElement(currentStr, 1);
+		enterStr.Append(numberStr);
+	}
+	currentStr = L"";
+	//enterStr.Append(numberStr);
+	enterStr.Append(L")");
+	action = 0;                                                      //ПОка хз что с этим делать
+	//prior = 3;
+	m_Edit.SetWindowTextW(enterStr);
+
+	int Index = GetDocument()->getNumElements() - 1;
+	CString num1;
+	CString oper=L"";
+	CString num2;
+	CString rez;
+	while (oper != '(')
+	{
+		num1 = GetDocument()->PopElement(Index)->getValue();
+		--Index;
+		oper = GetDocument()->PopElement(Index)->getValue();
+		--Index;
+		if (oper == '(')
+		{
+			GetDocument()->PushElement(num1, 1);
+			currentStr = num1;
+			numberStr = num1;
+			m_Number.SetWindowTextW(numberStr);
+		}
+		else
+		{
+			num2 = GetDocument()->PopElement(Index)->getValue();
+			--Index;
+			rez= Calculate(num1, oper, num2);
+			GetDocument()->PushElement(rez, 1);
+			++Index;
+		}
+	}
+	wasPushRightBracket = 1;
 }
