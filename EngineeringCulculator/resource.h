@@ -26,6 +26,7 @@
 #define IDC_NUMBER                      1018
 #define IDC_LEFTBRACKET                 1020
 #define IDC_RIGTHBRACKET                1021
+#define IDC_BTNSQRT                     1023
 
 // Next default values for new objects
 // 
@@ -33,7 +34,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        311
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1022
+#define _APS_NEXT_CONTROL_VALUE         1024
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -58,6 +58,7 @@ ON_BN_CLICKED(IDC_BTNDIVIDE, &CEngineeringCulculatorView::OnBnClickedBtndivide)
 ON_BN_CLICKED(IDC_BTNEQL, &CEngineeringCulculatorView::OnBnClickedBtneql)
 ON_BN_CLICKED(IDC_LEFTBRACKET, &CEngineeringCulculatorView::OnBnClickedLeftbracket)
 ON_BN_CLICKED(IDC_RIGTHBRACKET, &CEngineeringCulculatorView::OnBnClickedRigthbracket)
+ON_BN_CLICKED(IDC_BTNSQRT, &CEngineeringCulculatorView::OnBnClickedBtnsqrt)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -455,13 +456,13 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 		enterStr.Append(L"+");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 1;
-		if (prior <= 1)
+		/*if (prior <= 1)
 		{
 			enterStr.Append(L")");
 			for (int i = enterStr.GetLength() - 1; i >= 0; i--)
 				enterStr.SetAt(i+1,enterStr.GetAt(i));
 			enterStr.SetAt(0,*"(");
-		}
+		}*/
 	}
 }
 
@@ -524,15 +525,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
-		enterStr.Append(L"*");
+		//enterStr.Append(L"*");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 3;
-		if (prior <= 3)
+		if (prior <= 2)
 		{
-			enterStr.Append(L")");
-			for (int i = enterStr.GetLength() - 1; i >= 0; i--)
-				enterStr.SetAt(i + 1, enterStr.GetAt(i));
+			enterStr.Append(L")t");
+			for (int i = enterStr.GetLength() - 1; i > 0; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i-1));
 			enterStr.SetAt(0, *"(");
+			enterStr.Append(L"*");
+			currentStr = enterStr;
+			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
 }
@@ -564,7 +568,7 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		action = 0;
 	}
 
-	if (currentStr != "" && !wasPushRightBracket)
+	if (currentStr != "" && !wasPushRightBracket &&!wasPushAnotherOp)
 		GetDocument()->PushElement(currentStr, 1);
 
 	enterStr = L"";//Верхняя строка
@@ -592,6 +596,7 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 	numberStr = rez;//Нижняя строка
 	currentStr = rez;//Вводимая в текущий момент строка
 	wasPushRightBracket = 0;
+	wasPushAnotherOp = 0;
 	GetDocument()->PopElement(0);
 }
 
@@ -681,4 +686,23 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 		}
 	}
 	wasPushRightBracket = 1;
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	wasPushAnotherOp = 1;
+	if (currentStr != "") //&& !wasPushRightBracket)
+		GetDocument()->PushElement(currentStr, 1);
+	CString num=GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+	double Num = sqrt(_wtof(num));
+	CString rez;
+	rez.Format(L"%f",Num);
+	GetDocument()->PushElement(rez, 1);
+	numberStr = rez;
+	//numberStr.Append(rez);
+	currentStr = rez;
+	//currentStr.Append(rez);
+	m_Number.SetWindowTextW(numberStr);
 }

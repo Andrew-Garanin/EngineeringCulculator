@@ -52,6 +52,7 @@ public:
 	CString currentStr=L"0";//Вводимая в текущий момент строка
 	int wasPushLeftBracket = 0;
 	int wasPushRightBracket = 0;
+	int wasPushAnotherOp = 0;
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -111,6 +112,7 @@ public:
 	CEdit m_Number;
 	afx_msg void OnBnClickedLeftbracket();
 	afx_msg void OnBnClickedRigthbracket();
+	afx_msg void OnBnClickedBtnsqrt();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
