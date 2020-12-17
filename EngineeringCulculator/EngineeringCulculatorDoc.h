@@ -34,6 +34,8 @@ public:
 	Element *PopElement(int index);
 	int getNumElements();
 
+	int getCountOfNumbers();
+
 protected: // создать только из сериализации
 	CEngineeringCulculatorDoc() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorDoc)

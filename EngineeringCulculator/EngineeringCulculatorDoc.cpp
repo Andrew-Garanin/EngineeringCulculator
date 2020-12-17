@@ -158,3 +158,15 @@ int CEngineeringCulculatorDoc::getNumElements()
 {
 	return stack.GetSize();
 }
+
+int CEngineeringCulculatorDoc::getCountOfNumbers()
+{
+	int size=stack.GetSize();
+	int count = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (stack.GetAt(i)->getWhatThis() == 1)
+			count++;
+	}
+	return count;
+}
