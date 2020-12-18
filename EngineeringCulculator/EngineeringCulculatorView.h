@@ -53,6 +53,7 @@ public:
 	int wasPushLeftBracket = 0;
 	int wasPushRightBracket = 0;
 	int wasPushAnotherOp = 0;
+	int bracketCount = 0;
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)

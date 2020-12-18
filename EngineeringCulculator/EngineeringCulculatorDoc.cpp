@@ -163,7 +163,7 @@ int CEngineeringCulculatorDoc::getCountOfNumbers()
 {
 	int size=stack.GetSize();
 	int count = 0;
-	for (int i = 0; i < size; i++)
+	for (int i = size-1; i >= 0 && stack.GetAt(i)->getValue()!='('; i--)
 	{
 		if (stack.GetAt(i)->getWhatThis() == 1)
 			count++;
