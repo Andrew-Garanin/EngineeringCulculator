@@ -48,7 +48,7 @@ public:
 	int isCommaInNumber=0;//Индикатор запятой в числе
 	int action=0;//происходит ли выполнение операции и какой
 	int prior = 0;//Приоритет последней операции в стеке
-	int wasIql = 0;// было ли нажата кнопка равно
+	int wasIql = 0;// была ли нажата кнопка равно
 	CString currentStr=L"0";//Вводимая в текущий момент строка
 	int wasPushLeftBracket = 0;
 	int wasPushRightBracket = 0;

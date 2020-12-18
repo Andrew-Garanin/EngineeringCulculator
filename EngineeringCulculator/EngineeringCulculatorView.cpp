@@ -812,4 +812,24 @@ void CEngineeringCulculatorView::OnBnClickedMemplus()
 void CEngineeringCulculatorView::OnBnClickedBtnclear()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	enterStr = L"";//Верхняя строка
+	numberStr = L"0";//Нижняя строка
+	isCommaInNumber = 0;//Индикатор запятой в числе
+	action = 0;//происходит ли выполнение операции и какой
+	prior = 0;//Приоритет последней операции в стеке
+	wasIql = 0;// была ли нажата кнопка равно
+	currentStr = L"0";//Вводимая в текущий момент строка
+	wasPushLeftBracket = 0;
+	wasPushRightBracket = 0;
+	wasPushAnotherOp = 0;
+	bracketCount = 0;
+
+	m_Number.SetWindowTextW(numberStr);
+	m_Edit.SetWindowTextW(enterStr);
+	int size = GetDocument()->stack.GetSize();
+	int count = 0;
+	for (int i = size-1; i>= 0 ; i--)
+	{
+		GetDocument()->PopElement(i);
+	}
 }
