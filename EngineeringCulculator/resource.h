@@ -27,6 +27,12 @@
 #define IDC_LEFTBRACKET                 1020
 #define IDC_RIGTHBRACKET                1021
 #define IDC_BTNSQRT                     1023
+#define IDC_MEMCLEAR                    1024
+#define IDC_MEMREAD                     1025
+#define IDC_MEMSAVE                     1026
+#define IDC_MEMPLUS                     1027
+#define IDC_MEMMINUS                    1028
+#define IDC_BTNCLEAR                    1029
 
 // Next default values for new objects
 // 
@@ -34,7 +40,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        311
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1024
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

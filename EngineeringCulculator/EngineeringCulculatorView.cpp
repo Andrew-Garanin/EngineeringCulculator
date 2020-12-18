@@ -59,6 +59,12 @@ ON_BN_CLICKED(IDC_BTNEQL, &CEngineeringCulculatorView::OnBnClickedBtneql)
 ON_BN_CLICKED(IDC_LEFTBRACKET, &CEngineeringCulculatorView::OnBnClickedLeftbracket)
 ON_BN_CLICKED(IDC_RIGTHBRACKET, &CEngineeringCulculatorView::OnBnClickedRigthbracket)
 ON_BN_CLICKED(IDC_BTNSQRT, &CEngineeringCulculatorView::OnBnClickedBtnsqrt)
+ON_BN_CLICKED(IDC_MEMCLEAR, &CEngineeringCulculatorView::OnBnClickedMemclear)
+ON_BN_CLICKED(IDC_MEMREAD, &CEngineeringCulculatorView::OnBnClickedMemread)
+ON_BN_CLICKED(IDC_MEMSAVE, &CEngineeringCulculatorView::OnBnClickedMemsave)
+ON_BN_CLICKED(IDC_MEMMINUS, &CEngineeringCulculatorView::OnBnClickedMemminus)
+ON_BN_CLICKED(IDC_MEMPLUS, &CEngineeringCulculatorView::OnBnClickedMemplus)
+ON_BN_CLICKED(IDC_BTNCLEAR, &CEngineeringCulculatorView::OnBnClickedBtnclear)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -741,7 +747,8 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
 	}
-	else {
+	else 
+	{
 		GetDocument()->PushElement(currentStr, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
@@ -756,5 +763,53 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		numberStr = rez;
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"sqrt(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
 	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedMemclear()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	memory->memoryClear();
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedMemread()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	CString value;
+	value.Format(L"%f", memory->memoryRead());
+	currentStr = value;
+	numberStr = value;
+	m_Number.SetWindowTextW(numberStr);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedMemsave()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	memory->memorySave(_tstof(currentStr));
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedMemminus()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	memory->memoryMinus(_tstof(currentStr));
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedMemplus()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	memory->memoryPlus(_tstof(currentStr));
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnclear()
+{
+	// TODO: добавьте свой код обработчика уведомлений
 }

@@ -4,6 +4,36 @@
 
 
 #pragma once
+class Memory : public CObject
+{
+protected:
+	double value;
+public:
+	Memory()
+	{
+		value = 0;
+	}
+	void memoryClear()
+	{
+		value = 0;
+	}
+	void memoryPlus(double val)
+	{
+		value+= val;
+	}
+	void memoryMinus(double val)
+	{
+		value -= val;
+	}
+	double memoryRead()
+	{
+		return value;
+	}
+	void memorySave(double val)
+	{
+		value = val;
+	}
+};
 class Element : public CObject
 {
 protected:
@@ -33,7 +63,6 @@ public:
 	void PushElement(CString Val, int WhatThis);
 	Element *PopElement(int index);
 	int getNumElements();
-
 	int getCountOfNumbers();
 
 protected: // создать только из сериализации

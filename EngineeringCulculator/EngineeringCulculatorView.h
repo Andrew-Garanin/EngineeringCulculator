@@ -54,6 +54,7 @@ public:
 	int wasPushRightBracket = 0;
 	int wasPushAnotherOp = 0;
 	int bracketCount = 0;
+	Memory *memory= new Memory();
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -114,6 +115,12 @@ public:
 	afx_msg void OnBnClickedLeftbracket();
 	afx_msg void OnBnClickedRigthbracket();
 	afx_msg void OnBnClickedBtnsqrt();
+	afx_msg void OnBnClickedMemclear();
+	afx_msg void OnBnClickedMemread();
+	afx_msg void OnBnClickedMemsave();
+	afx_msg void OnBnClickedMemminus();
+	afx_msg void OnBnClickedMemplus();
+	afx_msg void OnBnClickedBtnclear();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
