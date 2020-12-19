@@ -27,15 +27,86 @@ CString Calculate(CString num1, CString oper, CString num2)
 		str.Format(L"%f", Num1 + Num2);
 		return str;
 	}
+	if (oper == "-")
+	{
+		CString str;
+		str.Format(L"%f", Num2 - Num1);
+		return str;
+	}
 	if (oper == "*")
 	{
 		CString str;
 		str.Format(L"%f", Num1 * Num2);
 		return str;
 	}
+	if (oper == "/")
+	{
+		if (Num2 == 0)
+		{
+			return L"Деление на ноль невозможно";
+		}
+		CString str;
+		str.Format(L"%f", Num2 / Num1);
+		return str;
+	}
 }
 // CEngineeringCulculatorView
+void CEngineeringCulculatorView::BtnClick(CString number)
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	wasPushAnotherOp = 0;
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		action = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
 
+	if (numberStr == L"0")
+	{
+		numberStr = number;
+		currentStr = number;
+		isCommaInNumber = 0;
+	}
+	else
+	{
+		//numberStr = L"";????????????
+		currentStr.Append(number);
+		numberStr.Append(number);
+		//action = 0;
+
+
+		if (wasIql)
+		{
+			wasIql = 0;
+			numberStr = number;
+			currentStr = number;
+		}
+		//numberStr.Append(L"1");
+		//currentStr.Append(L"1");
+	}
+	m_Number.SetWindowTextW(numberStr);
+}
 IMPLEMENT_DYNCREATE(CEngineeringCulculatorView, CFormView)
 
 BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
@@ -141,270 +212,70 @@ void CEngineeringCulculatorView::OnEnChangeMainfield()
 void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	wasPushAnotherOp = 0;
-	if (action)
-	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		action = 0;
-		numberStr = L"0";
-		currentStr = L"0";
-	}
-
-	if (numberStr == L"0") 
-		{
-			numberStr = L"1";
-			currentStr = L"1";
-			isCommaInNumber = 0;
-		}
-	else 
-		{
-			//numberStr = L"";????????????
-			currentStr.Append(L"1");
-			numberStr.Append(L"1");
-			//action = 0;
-			
-
-			if (wasIql)
-				{
-					wasIql = 0;
-					numberStr = L"1";
-					currentStr = L"1";
-				}
-			//numberStr.Append(L"1");
-			//currentStr.Append(L"1");
-		}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"1");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn2()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	wasPushAnotherOp = 0;
-	if (action)
-	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		action = 0;
-		numberStr = L"0";
-		currentStr = L"0";
-	}
-
-	if (numberStr == L"0")
-	{
-		numberStr = L"2";
-		currentStr = L"2";
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		//numberStr = L"";????????????
-		currentStr.Append(L"2");
-		numberStr.Append(L"2");
-		//action = 0;
-
-
-		if (wasIql)
-		{
-			wasIql = 0;
-			numberStr = L"2";
-			currentStr = L"2";
-		}
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"2");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn3()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"3";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"3");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"3");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"3");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn4()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"4";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"4");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"4");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"4");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn5()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"5";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"5");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"5");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"5");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn6()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"6";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"6");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"6");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"6");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn7()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"7";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"7");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"7");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"7");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn8()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0") 
-	{
-		numberStr = L"8";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"8");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"8");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"8");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn9()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"9";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"9");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"9");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"9");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn0()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (numberStr == L"0")
-	{
-		numberStr = L"0";
-	}
-	else if (action)
-	{
-		numberStr = L"";
-		numberStr.Append(L"0");
-		action = 0;
-		isCommaInNumber = 0;
-	}
-	else
-	{
-		numberStr.Append(L"0");
-	}
-	m_Number.SetWindowTextW(numberStr);
+	CEngineeringCulculatorView::BtnClick(L"0");
 }
 
 
@@ -465,13 +336,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 		enterStr.Append(L"+");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 1;
-		/*if (prior <= 1)
-		{
-			enterStr.Append(L")");
-			for (int i = enterStr.GetLength() - 1; i >= 0; i--)
-				enterStr.SetAt(i+1,enterStr.GetAt(i));
-			enterStr.SetAt(0,*"(");
-		}*/
 	}
 }
 
@@ -481,16 +345,45 @@ void CEngineeringCulculatorView::OnBnClickedBtnminus()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		enterStr.Append(numberStr);
+		if (!wasPushRightBracket && !wasPushAnotherOp)
+		{
+			//wasPushRightBracket = 0;
+			GetDocument()->PushElement(currentStr, 1);
+			enterStr.Append(numberStr);
+		}
+		wasPushRightBracket = 0;
+		wasPushAnotherOp = 0;
+		//enterStr.Append(numberStr);
 		enterStr.Append(L"-");
-		action = 1;
+		action = 2;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
+
+		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
+		{
+			if (prior >= 1)
+			{
+				//считаем результат и его в стек
+				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString rez = Calculate(num1, oper, num2);
+				GetDocument()->PushElement(rez, 1);
+				numberStr = L"";
+				numberStr.Append(rez);
+				m_Number.SetWindowTextW(numberStr);
+			}
+		}
+		else
+		{
+			wasPushLeftBracket = 0;
+		}
 	}
-	if (action)
+	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
 		enterStr.Append(L"-");
 		m_Edit.SetWindowTextW(enterStr);
+		action = 2;
 	}
 }
 
@@ -556,6 +449,64 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 void CEngineeringCulculatorView::OnBnClickedBtndivide()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	if (!action)
+	{
+		if (!wasPushRightBracket && !wasPushAnotherOp)
+		{
+			//wasPushRightBracket = 0;
+			GetDocument()->PushElement(currentStr, 1);
+			enterStr.Append(numberStr);
+		}
+		wasPushRightBracket = 0;
+		wasPushAnotherOp = 0;
+		//enterStr.Append(numberStr);
+		enterStr.Append(L"/");
+		action = 4;//запоминаем операцию
+		m_Edit.SetWindowTextW(enterStr);
+
+		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
+		{
+			if (prior >= 2)
+			{
+				//считаем результат и его в стек
+				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				GetDocument()->PushElement(rez, 1);
+				numberStr = L"";
+				numberStr.Append(rez);
+				m_Number.SetWindowTextW(numberStr);
+			}
+		}
+		else
+		{
+			wasPushLeftBracket = 0;
+		}
+	}
+	else if (action)//можно без if что делать если произошла замена операции
+	{
+		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
+		//enterStr.Append(L"*");
+		m_Edit.SetWindowTextW(enterStr);
+		action = 4;
+		if (prior <= 2)
+		{
+			enterStr.Append(L")#");
+			for (int i = enterStr.GetLength() - 1; i > 0; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 1));
+			enterStr.SetAt(0, *"(");
+			enterStr.Append(L"/");
+			//currentStr = enterStr;
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
 }
 
 
@@ -576,9 +527,19 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
 			prior = 1;
 		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
 		if (action == 3)
 		{
 			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
 		action = 0;
@@ -605,6 +566,12 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		num2 = GetDocument()->PopElement(Index)->getValue();
 		--Index;
 		rez = Calculate(num1, oper, num2);
+		if (rez == "Деление на ноль невозможно")
+		{
+			MessageBox(L"Деление на ноль невозможно");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		GetDocument()->PushElement(rez, 1);
 		++Index;
 	}
@@ -629,9 +596,19 @@ void CEngineeringCulculatorView::OnBnClickedLeftbracket()
 			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
 			prior = 1;
 		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
 		if (action == 3)
 		{
 			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
 		action = 0;
@@ -661,9 +638,19 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
 			prior = 1;
 		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
 		if (action == 3)
 		{
 			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
 		action = 0;
@@ -703,6 +690,12 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 			num2 = GetDocument()->PopElement(Index)->getValue();
 			--Index;
 			rez= Calculate(num1, oper, num2);
+			if (rez == "Деление на ноль невозможно")
+			{
+				MessageBox(L"Деление на ноль невозможно");
+				CEngineeringCulculatorView::OnBnClickedBtnclear();
+				return;
+			}
 			GetDocument()->PushElement(rez, 1);
 			++Index;
 		}
@@ -722,9 +715,19 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
 			prior = 1;
 		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
 		if (action == 3)
 		{
 			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
 		//action = 0;

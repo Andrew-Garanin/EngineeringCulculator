@@ -54,7 +54,9 @@ public:
 	int wasPushRightBracket = 0;
 	int wasPushAnotherOp = 0;
 	int bracketCount = 0;
+	int wasDevideZero = 0;
 	Memory *memory= new Memory();
+	void BtnClick(CString number);
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
