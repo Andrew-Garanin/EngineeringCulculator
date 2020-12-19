@@ -742,10 +742,71 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
-
 		numberStr = rez;
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку sqrt(...)
+		CString idBracket=L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength()-2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx-1; i>=0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+		
+			if (idBracket == '('|| idBracket == '+'|| idBracket == '-'|| idBracket == '*'|| idBracket == '/'|| i==0)
+			{
+				if (i == 0)
+				{
+					indx = i;
+					break;
+				}
+				else 
+				{
+					indx = i + 1;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить sqrt
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"q");
+			enterStr.SetAt(indx + 2, *"r");
+			enterStr.SetAt(indx + 3, *"t");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"q");
+			enterStr.SetAt(indx + 2, *"r");
+			enterStr.SetAt(indx + 3, *"t");
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
 	}
 	else 
 	{
