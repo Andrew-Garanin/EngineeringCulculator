@@ -4,42 +4,6 @@
 
 #pragma once
 
-//class Element : public CObject
-//{
-//protected:
-//	CString value;
-//	int whatThis;
-//public:
-//	Element(CString Val, int WhatThis)
-//	{
-//		value = Val;
-//		whatThis = WhatThis;
-//	}
-//	CString getValue()
-//	{
-//		return this->value;
-//	}
-//	int getWhatThis()
-//	{
-//		return this->whatThis;
-//	}
-//};
-//class Stack : CObArray
-//{
-//protected:
-//	CArray<Element, Element>  m_Array;
-//public:
-//	Stack()
-//	{
-//		m_Array.SetSize(1000);
-//	}
-//
-//	Element getElement(int index)
-//	{
-//		return m_Array.GetAt(index);
-//	}
-//};
-
 class CEngineeringCulculatorView : public CFormView
 {
 public:

@@ -116,6 +116,7 @@ BOOL CEngineeringCulculatorApp::InitInstance()
 	// Одно и только одно окно было инициализировано, поэтому отобразите и обновите его
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+	m_pMainWnd->SetWindowTextW(_T("Engineering calculator"));
 	return TRUE;
 }
 
