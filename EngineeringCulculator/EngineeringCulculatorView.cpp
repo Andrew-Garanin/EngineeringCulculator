@@ -140,6 +140,8 @@ ON_BN_CLICKED(IDC_MEMMINUS, &CEngineeringCulculatorView::OnBnClickedMemminus)
 ON_BN_CLICKED(IDC_MEMPLUS, &CEngineeringCulculatorView::OnBnClickedMemplus)
 ON_BN_CLICKED(IDC_BTNCLEAR, &CEngineeringCulculatorView::OnBnClickedBtnclear)
 ON_BN_CLICKED(IDC_BTNREVERSE, &CEngineeringCulculatorView::OnBnClickedBtnreverse)
+ON_BN_CLICKED(IDC_BTNCONV, &CEngineeringCulculatorView::OnBnClickedBtnconv)
+ON_BN_CLICKED(IDC_BTNSIN, &CEngineeringCulculatorView::OnBnClickedBtnsin)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -717,7 +719,6 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	//action = 0;
 	if (action)
 	{
 		if (action == 1)
@@ -740,10 +741,8 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
 			prior = 2;
 		}
-		//action = 0;
 	}
-	//if (currentStr != "" && !wasPushRightBracket && !wasPushAnotherOp && wasPushLeftBracket) //&& action)
-	//	GetDocument()->PushElement(currentStr, 1);
+
 	if (wasPushRightBracket || wasPushAnotherOp)
 	{
 		action = 0;
@@ -1043,6 +1042,279 @@ void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 		m_Number.SetWindowTextW(numberStr);
 
 		enterStr.Append(L"negate(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnconv()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		//double Num 
+		CString rez= Calculate(num,L"/",L"1");
+		if (rez == "Деление на ноль невозможно")
+		{
+			MessageBox(L"Деление на ноль невозможно");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		//rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку reciproc(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить reciproc
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"########");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 8; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 8));
+			enterStr.SetAt(indx, *"r");
+			enterStr.SetAt(indx + 1, *"e");
+			enterStr.SetAt(indx + 2, *"c");
+			enterStr.SetAt(indx + 3, *"i");
+			enterStr.SetAt(indx + 4, *"p");
+			enterStr.SetAt(indx + 5, *"r");
+			enterStr.SetAt(indx + 6, *"o");
+			enterStr.SetAt(indx + 7, *"c");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#########)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 9; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 9));
+			enterStr.SetAt(indx, *"r");
+			enterStr.SetAt(indx + 1, *"e");
+			enterStr.SetAt(indx + 2, *"c");
+			enterStr.SetAt(indx + 3, *"i");
+			enterStr.SetAt(indx + 4, *"p");
+			enterStr.SetAt(indx + 5, *"r");
+			enterStr.SetAt(indx + 6, *"o");
+			enterStr.SetAt(indx + 7, *"c");
+			enterStr.SetAt(indx + 8, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		//double Num = sqrt(_wtof(num));
+		CString rez = Calculate(num, L"/", L"1");
+		if (rez == "Деление на ноль невозможно")
+		{
+			MessageBox(L"Деление на ноль невозможно");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		//rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"reciproc(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnsin()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = sin(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку sin(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить sin
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"###");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 3));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"i");
+			enterStr.SetAt(indx + 2, *"n");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"i");
+			enterStr.SetAt(indx + 2, *"n");
+			enterStr.SetAt(indx + 3, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = sin(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"sin(" + num + ")");
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }

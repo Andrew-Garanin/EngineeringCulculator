@@ -90,6 +90,8 @@ public:
 	afx_msg void OnBnClickedBtnclear();
 	afx_msg void OnBnClickedBtnreverse();
 	CEdit m_IsMem;
+	afx_msg void OnBnClickedBtnconv();
+	afx_msg void OnBnClickedBtnsin();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
