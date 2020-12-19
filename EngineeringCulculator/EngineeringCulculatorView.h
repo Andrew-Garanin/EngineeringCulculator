@@ -55,6 +55,7 @@ public:
 	int wasPushAnotherOp = 0;
 	int bracketCount = 0;
 	int wasDevideZero = 0;
+	int wasMemRead = 0;
 	Memory *memory= new Memory();
 	void BtnClick(CString number);
 protected: // создать только из сериализации
@@ -123,6 +124,8 @@ public:
 	afx_msg void OnBnClickedMemminus();
 	afx_msg void OnBnClickedMemplus();
 	afx_msg void OnBnClickedBtnclear();
+	afx_msg void OnBnClickedBtnreverse();
+	CEdit m_IsMem;
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp

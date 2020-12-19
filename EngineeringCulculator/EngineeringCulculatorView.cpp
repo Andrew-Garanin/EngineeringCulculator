@@ -41,7 +41,7 @@ CString Calculate(CString num1, CString oper, CString num2)
 	}
 	if (oper == "/")
 	{
-		if (Num2 == 0)
+		if (Num1 == 0)
 		{
 			return L"Деление на ноль невозможно";
 		}
@@ -87,26 +87,29 @@ void CEngineeringCulculatorView::BtnClick(CString number)
 		numberStr = number;
 		currentStr = number;
 		isCommaInNumber = 0;
+		wasIql = 0;
+		wasMemRead = 0;
 	}
 	else
 	{
-		//numberStr = L"";????????????
-		currentStr.Append(number);
-		numberStr.Append(number);
-		//action = 0;
+		
 
-
-		if (wasIql)
+		if (wasIql|| wasMemRead )
 		{
 			wasIql = 0;
+			wasMemRead = 0;
 			numberStr = number;
 			currentStr = number;
+			isCommaInNumber = 0;
 		}
-		//numberStr.Append(L"1");
-		//currentStr.Append(L"1");
+		else {
+			currentStr.Append(number);
+			numberStr.Append(number);
+		}
 	}
 	m_Number.SetWindowTextW(numberStr);
 }
+
 IMPLEMENT_DYNCREATE(CEngineeringCulculatorView, CFormView)
 
 BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
@@ -136,6 +139,7 @@ ON_BN_CLICKED(IDC_MEMSAVE, &CEngineeringCulculatorView::OnBnClickedMemsave)
 ON_BN_CLICKED(IDC_MEMMINUS, &CEngineeringCulculatorView::OnBnClickedMemminus)
 ON_BN_CLICKED(IDC_MEMPLUS, &CEngineeringCulculatorView::OnBnClickedMemplus)
 ON_BN_CLICKED(IDC_BTNCLEAR, &CEngineeringCulculatorView::OnBnClickedBtnclear)
+ON_BN_CLICKED(IDC_BTNREVERSE, &CEngineeringCulculatorView::OnBnClickedBtnreverse)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -155,6 +159,7 @@ void CEngineeringCulculatorView::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MAINFIELD, m_Edit);
 	DDX_Control(pDX, IDC_NUMBER, m_Number);
+	DDX_Control(pDX, IDC_M, m_IsMem);
 }
 
 BOOL CEngineeringCulculatorView::PreCreateWindow(CREATESTRUCT& cs)
@@ -519,7 +524,6 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		return;
 	}
 	wasIql = 1;
-	
 	if (action)
 	{
 		if (action == 1)
@@ -587,6 +591,11 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 void CEngineeringCulculatorView::OnBnClickedLeftbracket()
 {
 	// TODO: добавьте свой код обработчика уведомлений
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		MessageBox(L"Введите операцию");
+		return;
+	}
 	wasPushLeftBracket = 1;
 	bracketCount++;
 	if (action)
@@ -838,6 +847,7 @@ void CEngineeringCulculatorView::OnBnClickedMemclear()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	memory->memoryClear();
+	m_IsMem.ShowWindow(SW_HIDE);
 }
 
 
@@ -849,6 +859,7 @@ void CEngineeringCulculatorView::OnBnClickedMemread()
 	currentStr = value;
 	numberStr = value;
 	m_Number.SetWindowTextW(numberStr);
+	wasMemRead = 1;
 }
 
 
@@ -856,6 +867,8 @@ void CEngineeringCulculatorView::OnBnClickedMemsave()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	memory->memorySave(_tstof(currentStr));
+	if(_tstof(currentStr)!=0)
+		m_IsMem.ShowWindow(SW_SHOW);
 }
 
 
@@ -895,5 +908,140 @@ void CEngineeringCulculatorView::OnBnClickedBtnclear()
 	for (int i = size-1; i>= 0 ; i--)
 	{
 		GetDocument()->PopElement(i);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnreverse()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	// TODO: добавьте свой код обработчика уведомлений
+	//action = 0;
+	if (action)
+	{
+		if (action == 1)
+		{
+			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 2)
+		{
+			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+			prior = 1;
+		}
+		if (action == 3)
+		{
+			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		if (action == 4)
+		{
+			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
+			prior = 2;
+		}
+		//action = 0;
+	}
+	//if (currentStr != "" && !wasPushRightBracket && !wasPushAnotherOp && wasPushLeftBracket) //&& action)
+	//	GetDocument()->PushElement(currentStr, 1);
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = -1*_wtof(num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку negate(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (i == 0)
+				{
+					indx = i;
+					break;
+				}
+				else
+				{
+					indx = i + 1;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить negate
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"######");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 6; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 6));
+			enterStr.SetAt(indx, *"n");
+			enterStr.SetAt(indx + 1, *"e");
+			enterStr.SetAt(indx + 2, *"g");
+			enterStr.SetAt(indx + 3, *"a");
+			enterStr.SetAt(indx + 4, *"t");
+			enterStr.SetAt(indx + 5, *"e");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#######)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 7; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 7));
+			enterStr.SetAt(indx, *"n");
+			enterStr.SetAt(indx + 1, *"e");
+			enterStr.SetAt(indx + 2, *"g");
+			enterStr.SetAt(indx + 3, *"a");
+			enterStr.SetAt(indx + 4, *"t");
+			enterStr.SetAt(indx + 5, *"e");
+			enterStr.SetAt(indx + 6, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = -1*_wtof(num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"negate(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
