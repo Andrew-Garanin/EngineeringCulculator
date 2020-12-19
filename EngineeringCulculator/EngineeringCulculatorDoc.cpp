@@ -59,10 +59,12 @@ void CEngineeringCulculatorDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: добавьте код сохранения
+		memory->Serialize(ar);
 	}
 	else
 	{
 		// TODO: добавьте код загрузки
+		memory->Serialize(ar);
 	}
 }
 
@@ -136,6 +138,8 @@ void CEngineeringCulculatorDoc::Dump(CDumpContext& dc) const
 
 
 // Команды CEngineeringCulculatorDoc
+IMPLEMENT_SERIAL(Memory, CObject, 1)
+
 void CEngineeringCulculatorDoc::PushElement(CString Val, int WhatThis)
 {
 	Element* el = new Element(Val, WhatThis);
@@ -170,3 +174,15 @@ int CEngineeringCulculatorDoc::getCountOfNumbers()
 	}
 	return count;
 }
+
+void Memory::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{
+		ar << value;
+		ar.GetFile()->SeekToBegin();
+	}
+	else
+		ar >> value;
+}
+

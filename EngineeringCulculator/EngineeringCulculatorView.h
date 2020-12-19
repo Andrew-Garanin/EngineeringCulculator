@@ -20,7 +20,7 @@ public:
 	int bracketCount = 0;
 	int wasDevideZero = 0;
 	int wasMemRead = 0;
-	Memory *memory= new Memory();
+	//Memory *memory= new Memory();
 	void BtnClick(CString number);
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;

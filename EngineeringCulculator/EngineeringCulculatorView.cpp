@@ -218,6 +218,7 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	CEngineeringCulculatorView::BtnClick(L"1");
+	
 }
 
 
@@ -782,14 +783,14 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		
 			if (idBracket == '('|| idBracket == '+'|| idBracket == '-'|| idBracket == '*'|| idBracket == '/'|| i==0)
 			{
-				if (i == 0)
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
 				{
-					indx = i;
+					indx = i+1;
 					break;
 				}
 				else 
 				{
-					indx = i + 1;
+					indx = i;
 					break;
 				}
 			}
@@ -846,7 +847,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 void CEngineeringCulculatorView::OnBnClickedMemclear()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	memory->memoryClear();
+	GetDocument()->memory->memoryClear();
 	m_IsMem.ShowWindow(SW_HIDE);
 }
 
@@ -855,7 +856,7 @@ void CEngineeringCulculatorView::OnBnClickedMemread()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	CString value;
-	value.Format(L"%f", memory->memoryRead());
+	value.Format(L"%f", GetDocument()->memory->memoryRead());
 	currentStr = value;
 	numberStr = value;
 	m_Number.SetWindowTextW(numberStr);
@@ -866,7 +867,7 @@ void CEngineeringCulculatorView::OnBnClickedMemread()
 void CEngineeringCulculatorView::OnBnClickedMemsave()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	memory->memorySave(_tstof(currentStr));
+	GetDocument()->memory->memorySave(_tstof(currentStr));
 	if(_tstof(currentStr)!=0)
 		m_IsMem.ShowWindow(SW_SHOW);
 }
@@ -875,14 +876,14 @@ void CEngineeringCulculatorView::OnBnClickedMemsave()
 void CEngineeringCulculatorView::OnBnClickedMemminus()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	memory->memoryMinus(_tstof(currentStr));
+	GetDocument()->memory->memoryMinus(_tstof(currentStr));
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedMemplus()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	memory->memoryPlus(_tstof(currentStr));
+	GetDocument()->memory->memoryPlus(_tstof(currentStr));
 }
 
 
@@ -982,14 +983,14 @@ void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 
 			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
 			{
-				if (i == 0)
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
 				{
-					indx = i;
+					indx = i+1;
 					break;
 				}
 				else
 				{
-					indx = i + 1;
+					indx = i;
 					break;
 				}
 			}

@@ -6,13 +6,15 @@
 #pragma once
 class Memory : public CObject
 {
-protected:
-	double value;
 public:
+	virtual void Serialize(CArchive& ar);
+	double value;
 	Memory()
 	{
 		value = 0;
 	}
+	DECLARE_SERIAL(Memory)
+	
 	void memoryClear()
 	{
 		value = 0;
@@ -34,6 +36,7 @@ public:
 		value = val;
 	}
 };
+
 class Element : public CObject
 {
 protected:
@@ -57,8 +60,10 @@ public:
 
 class CEngineeringCulculatorDoc : public CDocument
 {
+
 public://protected:
 	CTypedPtrArray <CObArray, Element*> stack;
+	Memory* memory = new Memory();
 public:
 	void PushElement(CString Val, int WhatThis);
 	Element *PopElement(int index);
