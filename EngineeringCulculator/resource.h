@@ -42,7 +42,6 @@
 #define IDC_BTNTAN                      1036
 #define IDC_BTNPOWTEN                   1037
 #define IDC_BTNPOW                      1038
-#define IDC_BUTTON1                     1040
 #define IDC_BTNMOD                      1040
 #define ID_32771                        32771
 
@@ -50,7 +49,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        311
+#define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32772
 #define _APS_NEXT_CONTROL_VALUE         1041
 #define _APS_NEXT_SYMED_VALUE           310

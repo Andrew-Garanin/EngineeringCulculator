@@ -74,5 +74,8 @@
     <Image Include="res\EngineeringCulculator.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="D:\Users\Андрей\Downloads\calculator_3534.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

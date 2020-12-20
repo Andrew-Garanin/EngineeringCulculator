@@ -199,10 +199,9 @@ ON_BN_CLICKED(IDC_BTNCOS, &CEngineeringCulculatorView::OnBnClickedBtncos)
 ON_BN_CLICKED(IDC_BTNTAN, &CEngineeringCulculatorView::OnBnClickedBtntan)
 ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
 ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
-//ON_WM_KEYDOWN()
-//ON_WM_CHAR()
-//ON_WM_CHAR()
 ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
+ON_COMMAND(ID_EDIT_COPY, &CEngineeringCulculatorView::OnEditCopy)
+ON_COMMAND(ID_EDIT_PASTE, &CEngineeringCulculatorView::OnEditPaste)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -1783,18 +1782,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 }
 
 
-//BOOL CEngineeringCulculatorView::PreTranslateMessage(MSG* pMsg)
-//{
-//	// TODO: добавьте специализированный код или вызов базового класса
-//	switch (pMsg->wParam)
-//	{
-//	case VK_NUMPAD1:
-//		OnBnClickedBtn1();
-//	}
-//	return CFormView::PreTranslateMessage(pMsg);
-//}
-
-
 void CEngineeringCulculatorView::OnBnClickedBtnmod()
 {
 	// TODO: добавьте свой код обработчика уведомлений
@@ -1850,4 +1837,24 @@ void CEngineeringCulculatorView::OnBnClickedBtnmod()
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
+}
+
+
+void CEngineeringCulculatorView::OnEditCopy()
+{
+	// TODO: добавьте свой код обработчика команд
+	m_Number.SetSel(0, m_Number.GetWindowTextLengthW());
+	m_Number.Copy();
+}
+
+
+void CEngineeringCulculatorView::OnEditPaste()
+{
+	// TODO: добавьте свой код обработчика команд
+	m_Number.SetReadOnly(FALSE);
+	m_Number.SetWindowTextW(L"");
+	m_Number.Paste();
+	m_Number.GetWindowTextW(currentStr);
+	m_Number.GetWindowTextW(numberStr);
+	m_Number.SetReadOnly(TRUE);
 }

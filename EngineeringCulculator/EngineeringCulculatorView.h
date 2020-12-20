@@ -97,11 +97,9 @@ public:
 	afx_msg void OnBnClickedBtntan();
 	afx_msg void OnBnClickedBtnpowten();
 	afx_msg void OnBnClickedBtnpow();
-//	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedBtnmod();
+	afx_msg void OnEditCopy();
+	afx_msg void OnEditPaste();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp

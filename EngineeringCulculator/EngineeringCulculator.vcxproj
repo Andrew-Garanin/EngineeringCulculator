@@ -211,6 +211,7 @@
     <None Include="res\EngineeringCulculator.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="D:\Users\Андрей\Downloads\calculator_3534.ico" />
     <Image Include="res\EngineeringCulculator.ico" />
     <Image Include="res\EngineeringCulculatorDoc.ico" />
   </ItemGroup>
