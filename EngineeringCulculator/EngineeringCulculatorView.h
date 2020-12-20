@@ -92,6 +92,7 @@ public:
 	CEdit m_IsMem;
 	afx_msg void OnBnClickedBtnconv();
 	afx_msg void OnBnClickedBtnsin();
+	afx_msg void OnBnClickedBtnfact();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
