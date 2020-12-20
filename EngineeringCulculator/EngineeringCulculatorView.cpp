@@ -188,6 +188,7 @@ ON_BN_CLICKED(IDC_BTNCOS, &CEngineeringCulculatorView::OnBnClickedBtncos)
 ON_BN_CLICKED(IDC_BTNTAN, &CEngineeringCulculatorView::OnBnClickedBtntan)
 ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
 ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
+ON_BN_CLICKED(IDC_BTNDEL, &CEngineeringCulculatorView::OnBnClickedBtndel)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -1753,4 +1754,21 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtndel()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (currentStr.GetLength() == 1)
+	{
+		numberStr = L"0";
+		currentStr = L"0";
+	}
+	else
+	{
+		numberStr.Delete(numberStr.GetLength() - 1, 1);
+		currentStr.Delete(currentStr.GetLength() - 1, 1);
+	}
+	m_Number.SetWindowTextW(numberStr);
 }
