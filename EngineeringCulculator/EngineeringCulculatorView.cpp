@@ -367,13 +367,11 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 	{
 		if (!wasPushRightBracket && !wasPushAnotherOp)
 		{
-			//wasPushRightBracket = 0;
 			GetDocument()->PushElement(currentStr, 1);
 			enterStr.Append(numberStr);
 		}
 		wasPushRightBracket = 0;
 		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
 		enterStr.Append(L"+");
 		action = 1;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
@@ -415,13 +413,11 @@ void CEngineeringCulculatorView::OnBnClickedBtnminus()
 	{
 		if (!wasPushRightBracket && !wasPushAnotherOp)
 		{
-			//wasPushRightBracket = 0;
 			GetDocument()->PushElement(currentStr, 1);
 			enterStr.Append(numberStr);
 		}
 		wasPushRightBracket = 0;
 		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
 		enterStr.Append(L"-");
 		action = 2;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
@@ -463,13 +459,11 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 	{
 		if (!wasPushRightBracket && !wasPushAnotherOp)
 		{
-			//wasPushRightBracket = 0;
 			GetDocument()->PushElement(currentStr, 1);
 			enterStr.Append(numberStr);
 		}
 		wasPushRightBracket = 0;
 		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
 		enterStr.Append(L"*");
 		action = 3;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
@@ -497,7 +491,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
-		//enterStr.Append(L"*");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 3;
 		if (prior <= 2)
@@ -507,7 +500,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 				enterStr.SetAt(i, enterStr.GetAt(i-1));
 			enterStr.SetAt(0, *"(");
 			enterStr.Append(L"*");
-			//currentStr = enterStr;
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
@@ -521,13 +513,11 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 	{
 		if (!wasPushRightBracket && !wasPushAnotherOp)
 		{
-			//wasPushRightBracket = 0;
 			GetDocument()->PushElement(currentStr, 1);
 			enterStr.Append(numberStr);
 		}
 		wasPushRightBracket = 0;
 		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
 		enterStr.Append(L"/");
 		action = 4;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
@@ -561,7 +551,6 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
-		//enterStr.Append(L"*");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 4;
 		if (prior <= 2)
@@ -571,7 +560,6 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
 			enterStr.Append(L"/");
-			//currentStr = enterStr;
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
@@ -659,7 +647,6 @@ void CEngineeringCulculatorView::OnBnClickedLeftbracket()
 void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	//wasPushRightBracket = 1;
 	if (!bracketCount)
 	{
 		return;
@@ -676,10 +663,8 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 		enterStr.Append(numberStr);
 	}
 	currentStr = L"";
-	//enterStr.Append(numberStr);
 	enterStr.Append(L")");
-	action = 0;                                                      //ПОка хз что с этим делать
-	//prior = 3;
+	action = 0;                                                      
 	m_Edit.SetWindowTextW(enterStr);
 
 	int Index = GetDocument()->getNumElements() - 1;
@@ -916,8 +901,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 		PutAction();
 		//action = 0;
 	}
-	//if (currentStr != "" && !wasPushRightBracket && !wasPushAnotherOp && wasPushLeftBracket) //&& action)
-	//	GetDocument()->PushElement(currentStr, 1);
 	if (wasPushRightBracket || wasPushAnotherOp)
 	{
 		action = 0;
@@ -1037,7 +1020,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		//double Num 
 		CString rez= Calculate(num,L"/",L"1");
 		if (rez == "Деление на ноль невозможно")
 		{
@@ -1045,7 +1027,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		//rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
 		numberStr = rez;
 		currentStr = rez;
@@ -1129,7 +1110,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		//double Num = sqrt(_wtof(num));
 		CString rez = Calculate(num, L"/", L"1");
 		if (rez == "Деление на ноль невозможно")
 		{
@@ -1137,7 +1117,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		//rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
 
 		numberStr = rez;
@@ -1271,7 +1250,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		//double Num ;
 		CString rez= Fact(_wtof(num));
 		if (rez == "Слишком большое число")
 		{
@@ -1285,7 +1263,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		//rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
 		numberStr = rez;
 		currentStr = rez;
@@ -1361,7 +1338,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		//double Num = Fact(_wtof(num));
 		CString rez =Fact(_wtof(num));
 		if (rez == "Слишком большое число")
 		{
@@ -1375,7 +1351,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		//rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
 
 		numberStr = rez;
@@ -1731,13 +1706,11 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 	{
 		if (!wasPushRightBracket && !wasPushAnotherOp)
 		{
-			//wasPushRightBracket = 0;
 			GetDocument()->PushElement(currentStr, 1);
 			enterStr.Append(numberStr);
 		}
 		wasPushRightBracket = 0;
 		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
 		enterStr.Append(L"^");
 		action = 5;//запоминаем операцию
 		m_Edit.SetWindowTextW(enterStr);
@@ -1765,7 +1738,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 	else if (action)//можно без if что делать если произошла замена операции
 	{
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - 1);
-		//enterStr.Append(L"*");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 5;
 		if (prior <= 3)
@@ -1775,7 +1747,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
 			enterStr.Append(L"^");
-			//currentStr = enterStr;
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}

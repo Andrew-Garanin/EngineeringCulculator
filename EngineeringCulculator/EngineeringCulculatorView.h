@@ -14,13 +14,13 @@ public:
 	int prior = 0;//Приоритет последней операции в стеке
 	int wasIql = 0;// была ли нажата кнопка равно
 	CString currentStr=L"0";//Вводимая в текущий момент строка
-	int wasPushLeftBracket = 0;
-	int wasPushRightBracket = 0;
-	int wasPushAnotherOp = 0;
-	int bracketCount = 0;
+	int wasPushLeftBracket = 0;//Была ли нажата левая скобка
+	int wasPushRightBracket = 0;//Была ли нажата правая скобка
+	int wasPushAnotherOp = 0;//Была ли вызвана унарная операция
+	int bracketCount = 0;//Контроль скобок
 	int wasDevideZero = 0;
 	int wasMemRead = 0;
-	//Memory *memory= new Memory();
+
 	void BtnClick(CString number);
 	void PutAction();
 protected: // создать только из сериализации
