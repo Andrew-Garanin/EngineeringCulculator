@@ -79,6 +79,12 @@ CString Calculate(CString num1, CString oper, CString num2)
 		str.Format(L"%f", pow(Num2,Num1));
 		return str;
 	}
+	if (oper == " mod ")
+	{
+		CString str;
+		str.Format(L"%f", fmod(Num2, Num1));
+		return str;
+	}
 }
 
 // CEngineeringCulculatorView
@@ -147,7 +153,12 @@ void CEngineeringCulculatorView::PutAction()
 	if (action == 5)
 	{
 		GetDocument()->PushElement(L"^", 2);//Кладем знак операии в стек
-		prior = 2;
+		prior = 3;
+	}
+	if (action == 6)
+	{
+		GetDocument()->PushElement(L" mod ", 2);//Кладем знак операии в стек
+		prior = 3;
 	}
 }
 
@@ -188,7 +199,10 @@ ON_BN_CLICKED(IDC_BTNCOS, &CEngineeringCulculatorView::OnBnClickedBtncos)
 ON_BN_CLICKED(IDC_BTNTAN, &CEngineeringCulculatorView::OnBnClickedBtntan)
 ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
 ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
-ON_BN_CLICKED(IDC_BTNDEL, &CEngineeringCulculatorView::OnBnClickedBtndel)
+//ON_WM_KEYDOWN()
+//ON_WM_CHAR()
+//ON_WM_CHAR()
+ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -721,6 +735,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) < 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		double Num = sqrt(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
@@ -799,6 +819,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) < 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		double Num = sqrt(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
@@ -1757,18 +1783,71 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 }
 
 
-void CEngineeringCulculatorView::OnBnClickedBtndel()
+//BOOL CEngineeringCulculatorView::PreTranslateMessage(MSG* pMsg)
+//{
+//	// TODO: добавьте специализированный код или вызов базового класса
+//	switch (pMsg->wParam)
+//	{
+//	case VK_NUMPAD1:
+//		OnBnClickedBtn1();
+//	}
+//	return CFormView::PreTranslateMessage(pMsg);
+//}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnmod()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	if (currentStr.GetLength() == 1)
+	if (!action)
 	{
-		numberStr = L"0";
-		currentStr = L"0";
+		if (!wasPushRightBracket && !wasPushAnotherOp)
+		{
+			//wasPushRightBracket = 0;
+			GetDocument()->PushElement(currentStr, 1);
+			enterStr.Append(numberStr);
+		}
+		wasPushRightBracket = 0;
+		wasPushAnotherOp = 0;
+		//enterStr.Append(numberStr);
+		enterStr.Append(L" mod ");
+		action = 6;//запоминаем операцию
+		m_Edit.SetWindowTextW(enterStr);
+
+		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
+		{
+			if (prior >= 3)
+			{
+				//считаем результат и его в стек
+				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+				CString rez = Calculate(num1, oper, num2);
+				GetDocument()->PushElement(rez, 1);
+				numberStr = L"";
+				numberStr.Append(rez);
+				m_Number.SetWindowTextW(numberStr);
+			}
+		}
+		else
+		{
+			wasPushLeftBracket = 0;
+		}
 	}
-	else
+	else if (action)//можно без if что делать если произошла замена операции
 	{
-		numberStr.Delete(numberStr.GetLength() - 1, 1);
-		currentStr.Delete(currentStr.GetLength() - 1, 1);
+		enterStr = enterStr.Mid(0, enterStr.GetLength() - 5);
+		//enterStr.Append(L"*");
+		m_Edit.SetWindowTextW(enterStr);
+		action = 5;
+		if (prior <= 3)
+		{
+			enterStr.Append(L")#");
+			for (int i = enterStr.GetLength() - 1; i > 0; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 1));
+			enterStr.SetAt(0, *"(");
+			enterStr.Append(L" mod ");
+			//currentStr = enterStr;
+			m_Edit.SetWindowTextW(enterStr);
+		}
 	}
-	m_Number.SetWindowTextW(numberStr);
 }

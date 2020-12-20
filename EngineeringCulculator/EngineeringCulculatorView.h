@@ -73,7 +73,6 @@ public:
 	afx_msg void OnBnClickedBtn9();
 	afx_msg void OnBnClickedBtn0();
 	afx_msg void OnBnClickedBtncom();
-//	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedBtnplus();
 	afx_msg void OnBnClickedBtnminus();
 	afx_msg void OnBnClickedBtnmultiply();
@@ -98,7 +97,11 @@ public:
 	afx_msg void OnBnClickedBtntan();
 	afx_msg void OnBnClickedBtnpowten();
 	afx_msg void OnBnClickedBtnpow();
-	afx_msg void OnBnClickedBtndel();
+//	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+//	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+//	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedBtnmod();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
