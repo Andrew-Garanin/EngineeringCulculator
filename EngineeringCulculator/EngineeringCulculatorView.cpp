@@ -88,31 +88,7 @@ void CEngineeringCulculatorView::BtnClick(CString number)
 	wasPushAnotherOp = 0;
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 5)
-		{
-			GetDocument()->PushElement(L"^", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 		action = 0;
 		numberStr = L"0";
 		currentStr = L"0";
@@ -148,8 +124,33 @@ void CEngineeringCulculatorView::BtnClick(CString number)
 
 void CEngineeringCulculatorView::PutAction()
 {
-
+	if (action == 1)
+	{
+		GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
+		prior = 1;
+	}
+	if (action == 2)
+	{
+		GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
+		prior = 1;
+	}
+	if (action == 3)
+	{
+		GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
+		prior = 2;
+	}
+	if (action == 4)
+	{
+		GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
+		prior = 2;
+	}
+	if (action == 5)
+	{
+		GetDocument()->PushElement(L"^", 2);//Кладем знак операии в стек
+		prior = 2;
+	}
 }
+
 IMPLEMENT_DYNCREATE(CEngineeringCulculatorView, CFormView)
 
 BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
@@ -264,7 +265,7 @@ void CEngineeringCulculatorView::OnEnChangeMainfield()
 void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"1");
+	BtnClick(L"1");
 	
 }
 
@@ -272,63 +273,63 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 void CEngineeringCulculatorView::OnBnClickedBtn2()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"2");
+	BtnClick(L"2");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn3()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"3");
+	BtnClick(L"3");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn4()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"4");
+	BtnClick(L"4");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn5()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"5");
+	BtnClick(L"5");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn6()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"6");
+	BtnClick(L"6");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn7()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"7");
+	BtnClick(L"7");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn8()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"8");
+	BtnClick(L"8");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn9()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"9");
+	BtnClick(L"9");
 }
 
 
 void CEngineeringCulculatorView::OnBnClickedBtn0()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	CEngineeringCulculatorView::BtnClick(L"0");
+	BtnClick(L"0");
 }
 
 
@@ -574,31 +575,7 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 	wasIql = 1;
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 5)
-		{
-			GetDocument()->PushElement(L"^", 2);//Кладем знак операии в стек
-			prior = 3;
-		}
+		PutAction();
 		action = 0;
 	}
 
@@ -653,26 +630,7 @@ void CEngineeringCulculatorView::OnBnClickedLeftbracket()
 	bracketCount++;
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 		action = 0;
 		numberStr = L"0";
 		currentStr = L"0";
@@ -695,26 +653,7 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 	bracketCount--;
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 		action = 0;
 	}
 
@@ -771,26 +710,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -965,30 +885,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnclear()
 void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 {
 	// TODO: добавьте свой код обработчика уведомлений
-	// TODO: добавьте свой код обработчика уведомлений
-	//action = 0;
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 		//action = 0;
 	}
 	//if (currentStr != "" && !wasPushRightBracket && !wasPushAnotherOp && wasPushLeftBracket) //&& action)
@@ -1102,26 +1001,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -1249,26 +1129,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -1374,26 +1235,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -1525,26 +1367,7 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -1650,26 +1473,7 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
@@ -1775,26 +1579,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnpowten()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (action)
 	{
-		if (action == 1)
-		{
-			GetDocument()->PushElement(L"+", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 2)
-		{
-			GetDocument()->PushElement(L"-", 2);//Кладем знак операии в стек
-			prior = 1;
-		}
-		if (action == 3)
-		{
-			GetDocument()->PushElement(L"*", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
-		if (action == 4)
-		{
-			GetDocument()->PushElement(L"/", 2);//Кладем знак операии в стек
-			prior = 2;
-		}
+		PutAction();
 	}
 
 	if (wasPushRightBracket || wasPushAnotherOp)
