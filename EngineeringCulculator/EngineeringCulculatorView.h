@@ -22,6 +22,7 @@ public:
 	int wasMemRead = 0;
 	//Memory *memory= new Memory();
 	void BtnClick(CString number);
+	void PutAction();
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -93,6 +94,10 @@ public:
 	afx_msg void OnBnClickedBtnconv();
 	afx_msg void OnBnClickedBtnsin();
 	afx_msg void OnBnClickedBtnfact();
+	afx_msg void OnBnClickedBtncos();
+	afx_msg void OnBnClickedBtntan();
+	afx_msg void OnBnClickedBtnpowten();
+	afx_msg void OnBnClickedBtnpow();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
