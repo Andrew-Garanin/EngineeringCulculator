@@ -19,10 +19,8 @@ public:
 	int wasPushAnotherOp = 0;//Была ли вызвана унарная операция
 	int bracketCount = 0;//Контроль скобок
 	int wasDevideZero = 0;
-	int wasMemRead = 0;
+	int wasMemRead = 0;//Было ли чтение из памяти
 
-	void BtnClick(CString number);
-	void PutAction();
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -38,6 +36,8 @@ public:
 
 // Операции
 public:
+	void BtnClick(CString number);//Функция, вызываемая при нажатии на цифру
+	void PutAction();//кладет знак операции в стек
 
 // Переопределение
 public:
@@ -101,6 +101,7 @@ public:
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
 	afx_msg void OnFileOpen();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp

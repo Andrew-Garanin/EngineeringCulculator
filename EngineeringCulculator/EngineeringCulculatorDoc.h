@@ -4,6 +4,7 @@
 
 
 #pragma once
+//Класс, описывающий память калькулятора
 class Memory : public CObject
 {
 public:
@@ -37,6 +38,7 @@ public:
 	}
 };
 
+//Класс, описывающий элемент, который кладется в главный стек
 class Element : public CObject
 {
 protected:
@@ -60,15 +62,9 @@ public:
 
 class CEngineeringCulculatorDoc : public CDocument
 {
-
-public://protected:
-	CTypedPtrArray <CObArray, Element*> stack;
-	Memory* memory = new Memory();
 public:
-	void PushElement(CString Val, int WhatThis);
-	Element *PopElement(int index);
-	int getNumElements();
-	int getCountOfNumbers();
+	CTypedPtrArray <CObArray, Element*> stack;//главный стек для чисел, операций, скобок и т.д.
+	Memory* memory = new Memory();//единственный объект типа Memory, являющийся памятью калькулятора
 
 protected: // создать только из сериализации
 	CEngineeringCulculatorDoc() noexcept;
@@ -79,7 +75,10 @@ public:
 
 // Операции
 public:
-
+	void PushElement(CString Val, int WhatThis);
+	Element *PopElement(int index);
+	int getNumElements();
+	int getCountOfNumbers();
 // Переопределение
 public:
 	virtual BOOL OnNewDocument();

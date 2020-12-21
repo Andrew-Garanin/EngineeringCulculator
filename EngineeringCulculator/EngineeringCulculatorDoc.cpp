@@ -141,13 +141,13 @@ void CEngineeringCulculatorDoc::Dump(CDumpContext& dc) const
 // Команды CEngineeringCulculatorDoc
 IMPLEMENT_SERIAL(Memory, CObject, 1)
 
-void CEngineeringCulculatorDoc::PushElement(CString Val, int WhatThis)
+void CEngineeringCulculatorDoc::PushElement(CString Val, int WhatThis)//Положить элемент на стек
 {
 	Element* el = new Element(Val, WhatThis);
 	stack.Add(el);
 }
 
-Element* CEngineeringCulculatorDoc::PopElement(int index)
+Element* CEngineeringCulculatorDoc::PopElement(int index)//Снять элемент со стека
 {
 	if (index < 0 || index > stack.GetUpperBound())
 		return 0;
@@ -159,12 +159,12 @@ Element* CEngineeringCulculatorDoc::PopElement(int index)
 	}
 }
 
-int CEngineeringCulculatorDoc::getNumElements()
+int CEngineeringCulculatorDoc::getNumElements()//Размер стека
 {
 	return stack.GetSize();
 }
 
-int CEngineeringCulculatorDoc::getCountOfNumbers()
+int CEngineeringCulculatorDoc::getCountOfNumbers()//Количество чисел до открывающей скобки
 {
 	int size=stack.GetSize();
 	int count = 0;

@@ -23,7 +23,7 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CEngineeringCulculatorApp::OnAppAbout)
 	// Стандартные команды по работе с файлами документов
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorApp::ResetFile)
+	ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorApp::ResetFile)//Изменил стандартную функцию на собственную
 END_MESSAGE_MAP()
 
 

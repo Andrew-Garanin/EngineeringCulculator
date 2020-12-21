@@ -37,7 +37,9 @@ CString Fact(double z)
 		str = L"Слишком большое число";
 	}
 	else
+	{
 		str.Format(L"%d", rez);
+	}
 	return str;
 }
 
@@ -110,8 +112,6 @@ void CEngineeringCulculatorView::BtnClick(CString number)
 	}
 	else
 	{
-		
-
 		if (wasIql|| wasMemRead )
 		{
 			wasIql = 0;
@@ -177,32 +177,32 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTN9, &CEngineeringCulculatorView::OnBnClickedBtn9)
 	ON_BN_CLICKED(IDC_BTN0, &CEngineeringCulculatorView::OnBnClickedBtn0)
 	ON_BN_CLICKED(IDC_BTNCOM, &CEngineeringCulculatorView::OnBnClickedBtncom)
-ON_BN_CLICKED(IDC_BTNPLUS, &CEngineeringCulculatorView::OnBnClickedBtnplus)
-ON_BN_CLICKED(IDC_BTNMINUS, &CEngineeringCulculatorView::OnBnClickedBtnminus)
-ON_BN_CLICKED(IDC_BTNMULTIPLY, &CEngineeringCulculatorView::OnBnClickedBtnmultiply)
-ON_BN_CLICKED(IDC_BTNDIVIDE, &CEngineeringCulculatorView::OnBnClickedBtndivide)
-ON_BN_CLICKED(IDC_BTNEQL, &CEngineeringCulculatorView::OnBnClickedBtneql)
-ON_BN_CLICKED(IDC_LEFTBRACKET, &CEngineeringCulculatorView::OnBnClickedLeftbracket)
-ON_BN_CLICKED(IDC_RIGTHBRACKET, &CEngineeringCulculatorView::OnBnClickedRigthbracket)
-ON_BN_CLICKED(IDC_BTNSQRT, &CEngineeringCulculatorView::OnBnClickedBtnsqrt)
-ON_BN_CLICKED(IDC_MEMCLEAR, &CEngineeringCulculatorView::OnBnClickedMemclear)
-ON_BN_CLICKED(IDC_MEMREAD, &CEngineeringCulculatorView::OnBnClickedMemread)
-ON_BN_CLICKED(IDC_MEMSAVE, &CEngineeringCulculatorView::OnBnClickedMemsave)
-ON_BN_CLICKED(IDC_MEMMINUS, &CEngineeringCulculatorView::OnBnClickedMemminus)
-ON_BN_CLICKED(IDC_MEMPLUS, &CEngineeringCulculatorView::OnBnClickedMemplus)
-ON_BN_CLICKED(IDC_BTNCLEAR, &CEngineeringCulculatorView::OnBnClickedBtnclear)
-ON_BN_CLICKED(IDC_BTNREVERSE, &CEngineeringCulculatorView::OnBnClickedBtnreverse)
-ON_BN_CLICKED(IDC_BTNCONV, &CEngineeringCulculatorView::OnBnClickedBtnconv)
-ON_BN_CLICKED(IDC_BTNSIN, &CEngineeringCulculatorView::OnBnClickedBtnsin)
-ON_BN_CLICKED(IDC_BTNFACT, &CEngineeringCulculatorView::OnBnClickedBtnfact)
-ON_BN_CLICKED(IDC_BTNCOS, &CEngineeringCulculatorView::OnBnClickedBtncos)
-ON_BN_CLICKED(IDC_BTNTAN, &CEngineeringCulculatorView::OnBnClickedBtntan)
-ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
-ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
-ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
-ON_COMMAND(ID_EDIT_COPY, &CEngineeringCulculatorView::OnEditCopy)
-ON_COMMAND(ID_EDIT_PASTE, &CEngineeringCulculatorView::OnEditPaste)
-ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorView::OnFileOpen)
+	ON_BN_CLICKED(IDC_BTNPLUS, &CEngineeringCulculatorView::OnBnClickedBtnplus)
+	ON_BN_CLICKED(IDC_BTNMINUS, &CEngineeringCulculatorView::OnBnClickedBtnminus)
+	ON_BN_CLICKED(IDC_BTNMULTIPLY, &CEngineeringCulculatorView::OnBnClickedBtnmultiply)
+	ON_BN_CLICKED(IDC_BTNDIVIDE, &CEngineeringCulculatorView::OnBnClickedBtndivide)
+	ON_BN_CLICKED(IDC_BTNEQL, &CEngineeringCulculatorView::OnBnClickedBtneql)
+	ON_BN_CLICKED(IDC_LEFTBRACKET, &CEngineeringCulculatorView::OnBnClickedLeftbracket)
+	ON_BN_CLICKED(IDC_RIGTHBRACKET, &CEngineeringCulculatorView::OnBnClickedRigthbracket)
+	ON_BN_CLICKED(IDC_BTNSQRT, &CEngineeringCulculatorView::OnBnClickedBtnsqrt)
+	ON_BN_CLICKED(IDC_MEMCLEAR, &CEngineeringCulculatorView::OnBnClickedMemclear)
+	ON_BN_CLICKED(IDC_MEMREAD, &CEngineeringCulculatorView::OnBnClickedMemread)
+	ON_BN_CLICKED(IDC_MEMSAVE, &CEngineeringCulculatorView::OnBnClickedMemsave)
+	ON_BN_CLICKED(IDC_MEMMINUS, &CEngineeringCulculatorView::OnBnClickedMemminus)
+	ON_BN_CLICKED(IDC_MEMPLUS, &CEngineeringCulculatorView::OnBnClickedMemplus)
+	ON_BN_CLICKED(IDC_BTNCLEAR, &CEngineeringCulculatorView::OnBnClickedBtnclear)
+	ON_BN_CLICKED(IDC_BTNREVERSE, &CEngineeringCulculatorView::OnBnClickedBtnreverse)
+	ON_BN_CLICKED(IDC_BTNCONV, &CEngineeringCulculatorView::OnBnClickedBtnconv)
+	ON_BN_CLICKED(IDC_BTNSIN, &CEngineeringCulculatorView::OnBnClickedBtnsin)
+	ON_BN_CLICKED(IDC_BTNFACT, &CEngineeringCulculatorView::OnBnClickedBtnfact)
+	ON_BN_CLICKED(IDC_BTNCOS, &CEngineeringCulculatorView::OnBnClickedBtncos)
+	ON_BN_CLICKED(IDC_BTNTAN, &CEngineeringCulculatorView::OnBnClickedBtntan)
+	ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
+	ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
+	ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
+	ON_COMMAND(ID_EDIT_COPY, &CEngineeringCulculatorView::OnEditCopy)
+	ON_COMMAND(ID_EDIT_PASTE, &CEngineeringCulculatorView::OnEditPaste)
+	ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorView::OnFileOpen)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -238,8 +238,8 @@ void CEngineeringCulculatorView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
-	if(GetDocument()->memory->value!=0)//Показываем, есть ли что-то в памяти или нет
-		m_IsMem.ShowWindow(SW_SHOW);
+	if(GetDocument()->memory->value!=0)
+		m_IsMem.ShowWindow(SW_SHOW);//буква M слева от поля ввода
 	m_Number.SetWindowTextW(L"0");
 }
 
@@ -283,7 +283,6 @@ void CEngineeringCulculatorView::OnBnClickedBtn1()
 {
 	// TODO: добавьте свой код обработчика уведомлений
 	BtnClick(L"1");
-	
 }
 
 
@@ -1837,6 +1836,28 @@ void CEngineeringCulculatorView::OnEditCopy()
 void CEngineeringCulculatorView::OnEditPaste()
 {
 	// TODO: добавьте свой код обработчика команд
+	CString fromClipboard;//в эту переменную сохраним текст из буфера обмена
+	if (OpenClipboard())//открываем буфер обмена
+	{
+		HANDLE hData = GetClipboardData(CF_TEXT);//извлекаем текст из буфера обмена
+		char* chBuffer = (char*)GlobalLock(hData);//блокируем память
+		fromClipboard = chBuffer;
+		GlobalUnlock(hData);//разблокируем память
+		CloseClipboard();//закрываем буфер обмена
+	}
+	int countComma = 0;
+	for (int i = 0; i < fromClipboard.GetLength(); i++)
+	{
+		if (!isdigit(fromClipboard[i]) && fromClipboard[i]!='.')
+		{
+			return;
+		}
+		if (fromClipboard[i] == '.')
+			countComma++;
+	}
+	if (countComma > 1)
+		return;
+
 	m_Number.SetReadOnly(FALSE);
 	m_Number.SetWindowTextW(L"");
 	if (action)
@@ -1856,10 +1877,78 @@ void CEngineeringCulculatorView::OnEditPaste()
 	m_Number.SetReadOnly(TRUE);
 }
 
-
 void CEngineeringCulculatorView::OnFileOpen()
 {
 	// TODO: добавьте свой код обработчика команд
-	GetDocument()->OnNewDocument();
-	theApp.ResetFile();
+	GetDocument()->OnNewDocument();//Необходимо для того, чтобы в документ можно было записать данные,
+	theApp.ResetFile();            //а затем загрузить их из того же документа
+}
+
+/*Кажется нет никакого способа передать ключевые события в CFormView, 
+  поэтому я решил переопределить виртуальную функцию PreTranslateMessage(MSG* pMsg)
+  и ловить события нажатия клавиши на клавиатуре в ней.*/
+BOOL CEngineeringCulculatorView::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: добавьте специализированный код или вызов базового класса
+	if (pMsg->message == WM_KEYDOWN) {
+		if(pMsg->wParam== VK_NUMPAD1|| pMsg->wParam == '1'){
+				BtnClick(L"1");	
+		}
+		if(pMsg->wParam== VK_NUMPAD2|| pMsg->wParam == '2'){
+				BtnClick(L"2");	
+		}
+		if(pMsg->wParam== VK_NUMPAD3|| pMsg->wParam == '3'){
+				BtnClick(L"3");	
+		}
+		if(pMsg->wParam== VK_NUMPAD4|| pMsg->wParam == '4'){
+				BtnClick(L"4");	
+		}
+		if(pMsg->wParam== VK_NUMPAD5|| pMsg->wParam == '5'){
+				BtnClick(L"5");	
+		}
+		if(pMsg->wParam== VK_NUMPAD6|| pMsg->wParam == '6'){
+				BtnClick(L"6");	
+		}
+		if(pMsg->wParam== VK_NUMPAD7|| pMsg->wParam == '7'){
+				BtnClick(L"7");	
+		}
+		if((pMsg->wParam== VK_NUMPAD8|| pMsg->wParam == '8')&& !::GetAsyncKeyState(VK_SHIFT)){
+				BtnClick(L"8");	
+		}
+		if((pMsg->wParam== VK_NUMPAD9|| pMsg->wParam == '9') && !::GetAsyncKeyState(VK_SHIFT)){
+				BtnClick(L"9");	
+		}
+		if((pMsg->wParam== VK_NUMPAD0|| pMsg->wParam == '0') && !::GetAsyncKeyState(VK_SHIFT)){
+				BtnClick(L"0");	
+		}
+		if ((pMsg->wParam == '8' && ::GetAsyncKeyState (VK_SHIFT))|| pMsg->wParam == 106) {
+			OnBnClickedBtnmultiply();
+		}
+		if (pMsg->wParam == '9' && ::GetAsyncKeyState(VK_SHIFT)) {
+			OnBnClickedLeftbracket();
+		}
+		if (pMsg->wParam == '0' && ::GetAsyncKeyState(VK_SHIFT)) {
+			OnBnClickedRigthbracket();
+		}
+		if (pMsg->wParam == 189 || pMsg->wParam == 109) {
+			OnBnClickedBtnminus();
+		}
+		if ((pMsg->wParam == 187 && ::GetAsyncKeyState(VK_SHIFT)) || pMsg->wParam == 107) {
+			OnBnClickedBtnplus();
+		}
+		if (pMsg->wParam == 191 || pMsg->wParam == 111) {
+			OnBnClickedBtndivide();
+		}
+		if (pMsg->wParam == 191 || pMsg->wParam == 111) {
+			OnBnClickedBtndivide();
+		}
+		if ((pMsg->wParam == 187 && !::GetAsyncKeyState(VK_SHIFT) )|| pMsg->wParam == 13) {
+			OnBnClickedBtneql();
+		}
+		return TRUE;
+	}
+	else if (pMsg->message == WM_KEYUP)
+		return TRUE;
+	else
+	return CFormView::PreTranslateMessage(pMsg);
 }
