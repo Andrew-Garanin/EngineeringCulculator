@@ -238,6 +238,8 @@ void CEngineeringCulculatorView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
+	if(GetDocument()->memory->value!=0)//Показываем, есть ли что-то в памяти или нет
+		m_IsMem.ShowWindow(SW_SHOW);
 	m_Number.SetWindowTextW(L"0");
 }
 
@@ -838,9 +840,21 @@ void CEngineeringCulculatorView::OnBnClickedMemread()
 	// TODO: добавьте свой код обработчика уведомлений
 	CString value;
 	value.Format(L"%f", GetDocument()->memory->memoryRead());
+	if (action)
+	{
+		PutAction();
+		action = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
 	currentStr = value;
 	numberStr = value;
 	m_Number.SetWindowTextW(numberStr);
+	//Вообще это не нужно, т.к. возвращается всегда число с точкой
+	if (numberStr.Find('.', 0) != -1)
+	{
+		isCommaInNumber = 1;
+	}
 	wasMemRead = 1;
 }
 
@@ -1825,9 +1839,20 @@ void CEngineeringCulculatorView::OnEditPaste()
 	// TODO: добавьте свой код обработчика команд
 	m_Number.SetReadOnly(FALSE);
 	m_Number.SetWindowTextW(L"");
+	if (action)
+	{
+		PutAction();
+		action = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
 	m_Number.Paste();
 	m_Number.GetWindowTextW(currentStr);
 	m_Number.GetWindowTextW(numberStr);
+	if (numberStr.Find('.', 0)!=-1)
+	{
+		isCommaInNumber = 1;
+	}
 	m_Number.SetReadOnly(TRUE);
 }
 
