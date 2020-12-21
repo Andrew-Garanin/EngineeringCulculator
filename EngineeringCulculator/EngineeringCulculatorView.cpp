@@ -202,6 +202,7 @@ ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
 ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
 ON_COMMAND(ID_EDIT_COPY, &CEngineeringCulculatorView::OnEditCopy)
 ON_COMMAND(ID_EDIT_PASTE, &CEngineeringCulculatorView::OnEditPaste)
+ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorView::OnFileOpen)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -1828,4 +1829,12 @@ void CEngineeringCulculatorView::OnEditPaste()
 	m_Number.GetWindowTextW(currentStr);
 	m_Number.GetWindowTextW(numberStr);
 	m_Number.SetReadOnly(TRUE);
+}
+
+
+void CEngineeringCulculatorView::OnFileOpen()
+{
+	// TODO: добавьте свой код обработчика команд
+	GetDocument()->OnNewDocument();
+	theApp.ResetFile();
 }

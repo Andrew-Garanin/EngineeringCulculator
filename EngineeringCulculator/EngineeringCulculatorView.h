@@ -100,6 +100,7 @@ public:
 	afx_msg void OnBnClickedBtnmod();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
+	afx_msg void OnFileOpen();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp

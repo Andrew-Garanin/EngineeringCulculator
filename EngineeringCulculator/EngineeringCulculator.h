@@ -22,6 +22,7 @@ public:
 
 // Переопределение
 public:
+	void ResetFile();
 	virtual BOOL InitInstance();
 
 // Реализация

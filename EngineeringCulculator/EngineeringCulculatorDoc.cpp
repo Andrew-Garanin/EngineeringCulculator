@@ -56,6 +56,7 @@ BOOL CEngineeringCulculatorDoc::OnNewDocument()
 
 void CEngineeringCulculatorDoc::Serialize(CArchive& ar)
 {
+	
 	if (ar.IsStoring())
 	{
 		// TODO: добавьте код сохранения
@@ -180,9 +181,10 @@ void Memory::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		ar << value;
-		ar.GetFile()->SeekToBegin();
 	}
-	else
+	else {
+		ar.GetFile()->SeekToBegin();
 		ar >> value;
+	}
 }
 
