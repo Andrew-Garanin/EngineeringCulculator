@@ -200,9 +200,12 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTNPOWTEN, &CEngineeringCulculatorView::OnBnClickedBtnpowten)
 	ON_BN_CLICKED(IDC_BTNPOW, &CEngineeringCulculatorView::OnBnClickedBtnpow)
 	ON_BN_CLICKED(IDC_BTNMOD, &CEngineeringCulculatorView::OnBnClickedBtnmod)
+	ON_BN_CLICKED(IDC_GRAD, &CEngineeringCulculatorView::OnBnClickedGrad)
+	ON_BN_CLICKED(IDC_RAD, &CEngineeringCulculatorView::OnBnClickedRad)
 	ON_COMMAND(ID_EDIT_COPY, &CEngineeringCulculatorView::OnEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, &CEngineeringCulculatorView::OnEditPaste)
 	ON_COMMAND(ID_FILE_OPEN, &CEngineeringCulculatorView::OnFileOpen)
+	ON_BN_CLICKED(IDC_BTNCUBEROOT, &CEngineeringCulculatorView::OnBnClickedBtncuberoot)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -211,6 +214,7 @@ CEngineeringCulculatorView::CEngineeringCulculatorView() noexcept
 	: CFormView(IDD_ENGINEERINGCULCULATOR_FORM)
 {
 	// TODO: добавьте код создания
+	m_AngleMeasure = INT_DEGREES;
 }
 
 CEngineeringCulculatorView::~CEngineeringCulculatorView()
@@ -223,6 +227,7 @@ void CEngineeringCulculatorView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MAINFIELD, m_Edit);
 	DDX_Control(pDX, IDC_NUMBER, m_Number);
 	DDX_Control(pDX, IDC_M, m_IsMem);
+	DDX_Radio(pDX, IDC_GRAD, m_AngleMeasure);
 }
 
 BOOL CEngineeringCulculatorView::PreCreateWindow(CREATESTRUCT& cs)
@@ -1158,7 +1163,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = sin(_wtof(num));
+		double Num = _wtof(num);
+		if(m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (180 / M_PI);
+		}
+		Num = sin(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1207,22 +1217,38 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 
 		if (ifFoundFirstly == 1)
 		{
-			enterStr.Append(L"###");
-			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
-				enterStr.SetAt(i, enterStr.GetAt(i - 3));
-			enterStr.SetAt(indx, *"s");
-			enterStr.SetAt(indx + 1, *"i");
-			enterStr.SetAt(indx + 2, *"n");
-			m_Edit.SetWindowTextW(enterStr);
-		}
-		else {
-			enterStr.Append(L"####)");
-			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 4));
 			enterStr.SetAt(indx, *"s");
 			enterStr.SetAt(indx + 1, *"i");
 			enterStr.SetAt(indx + 2, *"n");
-			enterStr.SetAt(indx + 3, *"(");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 6; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 6));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"i");
+			enterStr.SetAt(indx + 2, *"n");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			enterStr.SetAt(indx + 4, *"(");
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
@@ -1234,7 +1260,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = sin(_wtof(num));
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = sin(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1242,8 +1273,14 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 		numberStr = rez;
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
-
-		enterStr.Append(L"sin(" + num + ")");
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			enterStr.Append(L"sind(" + num + ")");
+		}
+		else
+		{
+			enterStr.Append(L"sinr(" + num + ")");
+		}
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }
@@ -1392,7 +1429,12 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = cos(_wtof(num));
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = cos(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1441,22 +1483,38 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 
 		if (ifFoundFirstly == 1)
 		{
-			enterStr.Append(L"###");
-			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
-				enterStr.SetAt(i, enterStr.GetAt(i - 3));
-			enterStr.SetAt(indx, *"c");
-			enterStr.SetAt(indx + 1, *"o");
-			enterStr.SetAt(indx + 2, *"s");
-			m_Edit.SetWindowTextW(enterStr);
-		}
-		else {
-			enterStr.Append(L"####)");
-			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 4));
 			enterStr.SetAt(indx, *"c");
 			enterStr.SetAt(indx + 1, *"o");
 			enterStr.SetAt(indx + 2, *"s");
-			enterStr.SetAt(indx + 3, *"(");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"s");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			enterStr.SetAt(indx + 4, *"(");
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
@@ -1468,7 +1526,12 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = cos(_wtof(num));
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = cos(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1476,8 +1539,14 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 		numberStr = rez;
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
-
-		enterStr.Append(L"cos(" + num + ")");
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			enterStr.Append(L"cosd(" + num + ")");
+		}
+		else
+		{
+			enterStr.Append(L"cosr(" + num + ")");
+		}
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }
@@ -1498,7 +1567,12 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = tan(_wtof(num));
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = tan(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1547,22 +1621,38 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 
 		if (ifFoundFirstly == 1)
 		{
-			enterStr.Append(L"###");
-			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
-				enterStr.SetAt(i, enterStr.GetAt(i - 3));
-			enterStr.SetAt(indx, *"t");
-			enterStr.SetAt(indx + 1, *"a");
-			enterStr.SetAt(indx + 2, *"n");
-			m_Edit.SetWindowTextW(enterStr);
-		}
-		else {
-			enterStr.Append(L"####)");
-			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 4));
 			enterStr.SetAt(indx, *"t");
 			enterStr.SetAt(indx + 1, *"a");
 			enterStr.SetAt(indx + 2, *"n");
-			enterStr.SetAt(indx + 3, *"(");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"t");
+			enterStr.SetAt(indx + 1, *"a");
+			enterStr.SetAt(indx + 2, *"n");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			enterStr.SetAt(indx + 4, *"(");
 			m_Edit.SetWindowTextW(enterStr);
 		}
 	}
@@ -1574,7 +1664,12 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = tan(_wtof(num));
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = tan(Num);
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -1582,8 +1677,14 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 		numberStr = rez;
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
-
-		enterStr.Append(L"tan(" + num + ")");
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			enterStr.Append(L"tand(" + num + ")");
+		}
+		else
+		{
+			enterStr.Append(L"tanr(" + num + ")");
+		}
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }
@@ -1951,4 +2052,137 @@ BOOL CEngineeringCulculatorView::PreTranslateMessage(MSG* pMsg)
 		return TRUE;
 	else
 	return CFormView::PreTranslateMessage(pMsg);
+}
+
+void  CEngineeringCulculatorView::OnBnClickedGrad()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (IsDlgButtonChecked(IDC_GRAD))
+	{
+		m_AngleMeasure = INT_DEGREES;
+	}
+}
+
+void  CEngineeringCulculatorView::OnBnClickedRad()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (IsDlgButtonChecked(IDC_RAD))
+	{
+		m_AngleMeasure = INT_RADIANS;
+	}
+}
+
+void CEngineeringCulculatorView::OnBnClickedBtncuberoot()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = pow(_wtof(num), (1.0 / 3.0));
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку coberoot(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить coberoot
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"########");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 8; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 8));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"u");
+			enterStr.SetAt(indx + 2, *"b");
+			enterStr.SetAt(indx + 3, *"e");
+			enterStr.SetAt(indx + 4, *"r");
+			enterStr.SetAt(indx + 5, *"o");
+			enterStr.SetAt(indx + 6, *"o");
+			enterStr.SetAt(indx + 7, *"t");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#########)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 9; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 9));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"u");
+			enterStr.SetAt(indx + 2, *"b");
+			enterStr.SetAt(indx + 3, *"e");
+			enterStr.SetAt(indx + 4, *"r");
+			enterStr.SetAt(indx + 5, *"o");
+			enterStr.SetAt(indx + 6, *"o");
+			enterStr.SetAt(indx + 7, *"t");
+			enterStr.SetAt(indx + 8, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = pow(_wtof(num),(1.0/3.0));
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"cuberoot(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
 }

@@ -31,7 +31,6 @@ END_MESSAGE_MAP()
 CEngineeringCulculatorDoc::CEngineeringCulculatorDoc() noexcept
 {
 	// TODO: добавьте код для одноразового вызова конструктора
-
 }
 
 CEngineeringCulculatorDoc::~CEngineeringCulculatorDoc()

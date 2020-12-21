@@ -63,6 +63,7 @@ public:
 class CEngineeringCulculatorDoc : public CDocument
 {
 public:
+
 	CTypedPtrArray <CObArray, Element*> stack;//главный стек для чисел, операций, скобок и т.д.
 	Memory* memory = new Memory();//единственный объект типа Memory, являющийся памятью калькулятора
 

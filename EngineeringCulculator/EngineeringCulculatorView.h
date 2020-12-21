@@ -20,7 +20,7 @@ public:
 	int bracketCount = 0;//Контроль скобок
 	int wasDevideZero = 0;
 	int wasMemRead = 0;//Было ли чтение из памяти
-
+	enum { INT_DEGREES, INT_RADIANS };
 protected: // создать только из сериализации
 	CEngineeringCulculatorView() noexcept;
 	DECLARE_DYNCREATE(CEngineeringCulculatorView)
@@ -101,7 +101,11 @@ public:
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
 	afx_msg void OnFileOpen();
+	afx_msg void OnBnClickedRad();
+	afx_msg void OnBnClickedGrad();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	int m_AngleMeasure;
+	afx_msg void OnBnClickedBtncuberoot();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
