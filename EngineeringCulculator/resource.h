@@ -45,8 +45,12 @@
 #define IDC_BTNMOD                      1040
 #define IDC_GRAD                        1041
 #define IDC_RAD                         1042
-#define IDC_BUTTON1                     1043
 #define IDC_BTNCUBEROOT                 1043
+#define IDC_BTNSQR                      1044
+#define IDC_BTNCUBE                     1045
+#define IDC_BTNYROOT                    1046
+#define IDC_BUTTON2                     1047
+#define IDC_BTNPI                       1047
 #define ID_32771                        32771
 
 // Next default values for new objects
@@ -55,7 +59,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32772
-#define _APS_NEXT_CONTROL_VALUE         1044
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

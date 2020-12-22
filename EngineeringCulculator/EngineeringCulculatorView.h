@@ -106,6 +106,10 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	int m_AngleMeasure;
 	afx_msg void OnBnClickedBtncuberoot();
+	afx_msg void OnBnClickedBtnsqr();
+	afx_msg void OnBnClickedBtncube();
+	afx_msg void OnBnClickedBtnyroot();
+	afx_msg void OnBnClickedBtnpi();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
