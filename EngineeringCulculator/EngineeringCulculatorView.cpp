@@ -234,6 +234,8 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTNCUBE, &CEngineeringCulculatorView::OnBnClickedBtncube)
 	ON_BN_CLICKED(IDC_BTNYROOT, &CEngineeringCulculatorView::OnBnClickedBtnyroot)
 	ON_BN_CLICKED(IDC_BTNPI, &CEngineeringCulculatorView::OnBnClickedBtnpi)
+	ON_BN_CLICKED(IDC_BTNEXP, &CEngineeringCulculatorView::OnBnClickedBtnexp)
+	ON_BN_CLICKED(IDC_BTNLN, &CEngineeringCulculatorView::OnBnClickedBtnln)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -559,9 +561,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 			for (int i = enterStr.GetLength() - 1; i > 0; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i-1));
 			enterStr.SetAt(0, *"(");
-			enterStr.Append(L"*");
-			m_Edit.SetWindowTextW(enterStr);
 		}
+		enterStr.Append(L"*");
+					m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
@@ -2620,6 +2622,177 @@ void CEngineeringCulculatorView::OnBnClickedBtnpi()
 			currentStr = strPI;
 			isCommaInNumber = 1;
 		}
+		else
+		{
+			numberStr = strPI;
+			currentStr = strPI;
+			isCommaInNumber = 1;
+		}
 	}
 	m_Number.SetWindowTextW(numberStr);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnexp()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	CString strE;
+	strE.Format(L"%f", M_E);
+	if (wasPushAnotherOp)
+	{
+		MessageBox(L"Введите операцию");
+		return;
+	}
+
+	if (action)
+	{
+		PutAction();
+		action = 0;
+		numberStr = L"0";
+		currentStr = L"0";
+	}
+
+	if (numberStr == L"0")
+	{
+		numberStr = strE;
+		currentStr = strE;
+		isCommaInNumber = 1;
+		wasIql = 0;
+		wasMemRead = 0;
+	}
+	else
+	{
+		if (wasIql || wasMemRead)
+		{
+			wasIql = 0;
+			wasMemRead = 0;
+			numberStr = strE;
+			currentStr = strE;
+			isCommaInNumber = 1;
+		}
+		else {
+			numberStr = strE;
+			currentStr = strE;
+			isCommaInNumber = 1;
+		}
+	}
+	m_Number.SetWindowTextW(numberStr);
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnln()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) <= 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		double Num = log(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку ln(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить ln
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"##");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 2; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 2));
+			enterStr.SetAt(indx, *"l");
+			enterStr.SetAt(indx + 1, *"n");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"###)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 3; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 3));
+			enterStr.SetAt(indx, *"l");
+			enterStr.SetAt(indx + 1, *"n");
+			enterStr.SetAt(indx + 2, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) <= 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		double Num = log(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"ln(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
 }
