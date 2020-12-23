@@ -239,6 +239,10 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTNLOG, &CEngineeringCulculatorView::OnBnClickedBtnlog)
 	ON_BN_CLICKED(IDC_BTNINT, &CEngineeringCulculatorView::OnBnClickedBtnint)
 	ON_BN_CLICKED(IDC_BTNSINH, &CEngineeringCulculatorView::OnBnClickedBtnsinh)
+	ON_BN_CLICKED(IDC_BTNCOSH, &CEngineeringCulculatorView::OnBnClickedBtncosh)
+	ON_BN_CLICKED(IDC_BTNTANH, &CEngineeringCulculatorView::OnBnClickedBtntanh)
+	ON_BN_CLICKED(IDC_BTNCOT, &CEngineeringCulculatorView::OnBnClickedBtncot)
+	ON_BN_CLICKED(IDC_BTNPOWE, &CEngineeringCulculatorView::OnBnClickedBtnpowe)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -3133,6 +3137,478 @@ void CEngineeringCulculatorView::OnBnClickedBtnsinh()
 		currentStr = rez;
 		m_Number.SetWindowTextW(numberStr);
 		enterStr.Append(L"sinh(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtncosh()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = cosh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 1;
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку cosh(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить cosh
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"s");
+			enterStr.SetAt(indx + 3, *"h");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"s");
+			enterStr.SetAt(indx + 3, *"h");
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = cosh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+		enterStr.Append(L"cosh(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtntanh()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = tanh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 1;
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку tanh(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить tanh
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"t");
+			enterStr.SetAt(indx + 1, *"a");
+			enterStr.SetAt(indx + 2, *"n");
+			enterStr.SetAt(indx + 3, *"h");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"t");
+			enterStr.SetAt(indx + 1, *"a");
+			enterStr.SetAt(indx + 2, *"n");
+			enterStr.SetAt(indx + 3, *"h");
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = tanh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+		enterStr.Append(L"tanh(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtncot()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = tan((M_PI/2.0) - Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 1;
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку cot(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить cot
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"t");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"c");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"t");
+			if (m_AngleMeasure == INT_DEGREES)
+			{
+				enterStr.SetAt(indx + 3, *"d");
+			}
+			else
+			{
+				enterStr.SetAt(indx + 3, *"r");
+			}
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			Num = Num * (M_PI / 180);
+		}
+		Num = tan((M_PI / 2.0) - Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 1;
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+		if (m_AngleMeasure == INT_DEGREES)
+		{
+			enterStr.Append(L"cotd(" + num + ")");
+		}
+		else
+		{
+			enterStr.Append(L"cotr(" + num + ")");
+		}
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnpowe()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = pow(M_E,_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку powe(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить powe
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"p");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"w");
+			enterStr.SetAt(indx + 3, *"e");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"p");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"w");
+			enterStr.SetAt(indx + 3, *"e");
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = pow(M_E, _wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"powe(" + num + ")");
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }
