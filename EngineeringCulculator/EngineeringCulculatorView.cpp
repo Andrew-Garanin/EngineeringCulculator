@@ -391,7 +391,6 @@ void CEngineeringCulculatorView::OnBnClickedBtn0()
 }
 
 
-
 void CEngineeringCulculatorView::OnBnClickedBtncom()
 {
 	// TODO: добавьте свой код обработчика уведомлений
@@ -658,8 +657,11 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		action = 0;
 	}
 
-	if (currentStr != "" && !wasPushRightBracket &&!wasPushAnotherOp)
-		GetDocument()->PushElement(currentStr, 1);
+	if (!wasPushRightBracket && !wasPushAnotherOp) {
+		CString str;
+		m_Number.GetWindowTextW(str);
+		GetDocument()->PushElement(str, 1);
+	}
 
 	enterStr = L"";//Верхняя строка
 	action = 0;//происходит ли выполнение операции
@@ -889,7 +891,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqrt()
 	}
 	else 
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1090,7 +1094,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1212,7 +1218,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1345,7 +1353,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnsin()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1476,7 +1486,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1615,7 +1627,9 @@ void CEngineeringCulculatorView::OnBnClickedBtncos()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1755,7 +1769,9 @@ void CEngineeringCulculatorView::OnBnClickedBtntan()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -1886,7 +1902,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnpowten()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -2282,7 +2300,9 @@ void CEngineeringCulculatorView::OnBnClickedBtncuberoot()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -2389,7 +2409,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnsqr()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -2498,7 +2520,9 @@ void CEngineeringCulculatorView::OnBnClickedBtncube()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -2775,7 +2799,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnln()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -2895,7 +2921,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnlog()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3009,7 +3037,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnint()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3120,7 +3150,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnsinh()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3231,7 +3263,9 @@ void CEngineeringCulculatorView::OnBnClickedBtncosh()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3342,7 +3376,9 @@ void CEngineeringCulculatorView::OnBnClickedBtntanh()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3471,7 +3507,9 @@ void CEngineeringCulculatorView::OnBnClickedBtncot()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
@@ -3592,7 +3630,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnpowe()
 	}
 	else
 	{
-		GetDocument()->PushElement(currentStr, 1);
+		CString numberFromNumberField;
+		m_Number.GetWindowTextW(numberFromNumberField);
+		GetDocument()->PushElement(numberFromNumberField, 1);
 		action = 0;
 		wasPushAnotherOp = 1;
 		wasPushRightBracket = 0;
