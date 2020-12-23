@@ -429,6 +429,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
 				GetDocument()->PushElement(rez, 1);
 				isCommaInNumber = 1;
 				numberStr = L"";
@@ -483,6 +495,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnminus()
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
 				GetDocument()->PushElement(rez, 1);
 				isCommaInNumber = 1;
 				numberStr = L"";
@@ -537,6 +561,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
 				GetDocument()->PushElement(rez, 1);
 				isCommaInNumber = 1;
 				numberStr = L"";
@@ -602,6 +638,12 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 				if (rez == "Деление на ноль невозможно")
 				{
 					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
 					CEngineeringCulculatorView::OnBnClickedBtnclear();
 					return;
 				}
@@ -1957,6 +1999,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
 				GetDocument()->PushElement(rez, 1);
 				isCommaInNumber = 1;
 				numberStr = L"";
@@ -2021,6 +2075,18 @@ void CEngineeringCulculatorView::OnBnClickedBtnmod()
 				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 				CString rez = Calculate(num1, oper, num2);
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Недопустимый ввод")
+				{
+					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
 				GetDocument()->PushElement(rez, 1);
 				isCommaInNumber = 1;
 				numberStr = L"";
@@ -2574,6 +2640,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnyroot()
 				if (rez == "Недопустимый ввод")
 				{
 					MessageBox(L"Недопустимый ввод");
+					CEngineeringCulculatorView::OnBnClickedBtnclear();
+					return;
+				}
+				if (rez == "Деление на ноль невозможно")
+				{
+					MessageBox(L"Деление на ноль невозможно");
 					CEngineeringCulculatorView::OnBnClickedBtnclear();
 					return;
 				}
