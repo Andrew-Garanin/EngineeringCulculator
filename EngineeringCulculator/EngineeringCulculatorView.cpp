@@ -563,7 +563,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 			enterStr.SetAt(0, *"(");
 		}
 		enterStr.Append(L"*");
-					m_Edit.SetWindowTextW(enterStr);
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
@@ -629,9 +629,9 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 			for (int i = enterStr.GetLength() - 1; i > 0; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
-			enterStr.Append(L"/");
-			m_Edit.SetWindowTextW(enterStr);
 		}
+		enterStr.Append(L"/");
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
@@ -1962,9 +1962,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 			for (int i = enterStr.GetLength() - 1; i > 0; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
-			enterStr.Append(L"^");
-			m_Edit.SetWindowTextW(enterStr);
 		}
+		enterStr.Append(L"^");
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
@@ -2027,10 +2027,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnmod()
 			for (int i = enterStr.GetLength() - 1; i > 0; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
-			enterStr.Append(L" mod ");
-			//currentStr = enterStr;
-			m_Edit.SetWindowTextW(enterStr);
 		}
+		enterStr.Append(L" mod ");
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
@@ -2577,10 +2576,9 @@ void CEngineeringCulculatorView::OnBnClickedBtnyroot()
 			for (int i = enterStr.GetLength() - 1; i > 0; i--)
 				enterStr.SetAt(i, enterStr.GetAt(i - 1));
 			enterStr.SetAt(0, *"(");
-			enterStr.Append(L" yroot ");
-			//currentStr = enterStr;
-			m_Edit.SetWindowTextW(enterStr);
 		}
+		enterStr.Append(L" yroot ");
+		m_Edit.SetWindowTextW(enterStr);
 	}
 }
 
