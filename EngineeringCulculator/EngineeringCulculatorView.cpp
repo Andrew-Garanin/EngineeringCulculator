@@ -236,6 +236,9 @@ BEGIN_MESSAGE_MAP(CEngineeringCulculatorView, CFormView)
 	ON_BN_CLICKED(IDC_BTNPI, &CEngineeringCulculatorView::OnBnClickedBtnpi)
 	ON_BN_CLICKED(IDC_BTNEXP, &CEngineeringCulculatorView::OnBnClickedBtnexp)
 	ON_BN_CLICKED(IDC_BTNLN, &CEngineeringCulculatorView::OnBnClickedBtnln)
+	ON_BN_CLICKED(IDC_BTNLOG, &CEngineeringCulculatorView::OnBnClickedBtnlog)
+	ON_BN_CLICKED(IDC_BTNINT, &CEngineeringCulculatorView::OnBnClickedBtnint)
+	ON_BN_CLICKED(IDC_BTNSINH, &CEngineeringCulculatorView::OnBnClickedBtnsinh)
 END_MESSAGE_MAP()
 
 // Создание или уничтожение CEngineeringCulculatorView
@@ -2791,6 +2794,345 @@ void CEngineeringCulculatorView::OnBnClickedBtnln()
 		m_Number.SetWindowTextW(numberStr);
 
 		enterStr.Append(L"ln(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnlog()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) <= 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		double Num = log10(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку log(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить log
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"###");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 3));
+			enterStr.SetAt(indx, *"l");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"g");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"l");
+			enterStr.SetAt(indx + 1, *"o");
+			enterStr.SetAt(indx + 2, *"g");
+			enterStr.SetAt(indx + 3, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		if (_wtof(num) <= 0)
+		{
+			MessageBox(L"Недопустимый ввод");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		double Num = log10(_wtof(num));
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"log(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnint()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		int Num = (int)_wtof(num);
+		CString rez;
+		rez.Format(L"%d", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 0;
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку Int(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить Int
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"###");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 3; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 3));
+			enterStr.SetAt(indx, *"I");
+			enterStr.SetAt(indx + 1, *"n");
+			enterStr.SetAt(indx + 2, *"t");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"I");
+			enterStr.SetAt(indx + 1, *"n");
+			enterStr.SetAt(indx + 2, *"t");
+			enterStr.SetAt(indx + 3, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		int Num = (int)_wtof(num);
+		CString rez;
+		rez.Format(L"%d", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 0;
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		enterStr.Append(L"Int(" + num + ")");
+		m_Edit.SetWindowTextW(enterStr);
+	}
+}
+
+
+void CEngineeringCulculatorView::OnBnClickedBtnsinh()
+{
+	// TODO: добавьте свой код обработчика уведомлений
+	if (action)
+	{
+		PutAction();
+	}
+
+	if (wasPushRightBracket || wasPushAnotherOp)
+	{
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = sinh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		GetDocument()->PushElement(rez, 1);
+		isCommaInNumber = 1;
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+
+		//Добавление в основную строку sinh(...)
+		CString idBracket = L"";
+		int bracketCount = 1;
+		int indx;//Искомый индекс
+		for (indx = enterStr.GetLength() - 2; 1; indx--)
+		{
+			idBracket = enterStr.GetAt(indx);
+			if (idBracket == ')')
+				bracketCount++;
+			if (idBracket == '(')
+				bracketCount--;
+			if (idBracket == '(' && bracketCount == 0)
+				break;
+		}
+		//indx==индексу на котором стоит искомая парная скобка
+		idBracket = "";
+
+		int ifFoundFirstly = 1;
+		for (int i = indx - 1; i >= 0; i--)
+		{
+			idBracket = enterStr.GetAt(i);
+
+			if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/' || i == 0)
+			{
+				if (idBracket == '(' || idBracket == '+' || idBracket == '-' || idBracket == '*' || idBracket == '/')
+				{
+					indx = i + 1;
+					break;
+				}
+				else
+				{
+					indx = i;
+					break;
+				}
+			}
+			ifFoundFirstly++;
+		}
+		//indx==место в которое нужно вставить sinh
+
+		if (ifFoundFirstly == 1)
+		{
+			enterStr.Append(L"####");
+			for (int i = enterStr.GetLength() - 1; i >= indx + 4; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 4));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"i");
+			enterStr.SetAt(indx + 2, *"n");
+			enterStr.SetAt(indx + 3, *"h");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+		else {
+			enterStr.Append(L"#####)");
+			for (int i = enterStr.GetLength() - 2; i >= indx + 5; i--)
+				enterStr.SetAt(i, enterStr.GetAt(i - 5));
+			enterStr.SetAt(indx, *"s");
+			enterStr.SetAt(indx + 1, *"i");
+			enterStr.SetAt(indx + 2, *"n");
+			enterStr.SetAt(indx + 3, *"h");
+			enterStr.SetAt(indx + 4, *"(");
+			m_Edit.SetWindowTextW(enterStr);
+		}
+	}
+	else
+	{
+		GetDocument()->PushElement(currentStr, 1);
+		action = 0;
+		wasPushAnotherOp = 1;
+		wasPushRightBracket = 0;
+
+		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+		double Num = _wtof(num);
+		Num = sinh(Num);
+		CString rez;
+		rez.Format(L"%f", Num);
+		isCommaInNumber = 1;
+		GetDocument()->PushElement(rez, 1);
+
+		numberStr = rez;
+		currentStr = rez;
+		m_Number.SetWindowTextW(numberStr);
+		enterStr.Append(L"sinh(" + num + ")");
 		m_Edit.SetWindowTextW(enterStr);
 	}
 }

@@ -112,6 +112,9 @@ public:
 	afx_msg void OnBnClickedBtnpi();
 	afx_msg void OnBnClickedBtnexp();
 	afx_msg void OnBnClickedBtnln();
+	afx_msg void OnBnClickedBtnlog();
+	afx_msg void OnBnClickedBtnint();
+	afx_msg void OnBnClickedBtnsinh();
 };
 
 #ifndef _DEBUG  // версия отладки в EngineeringCulculatorView.cpp
