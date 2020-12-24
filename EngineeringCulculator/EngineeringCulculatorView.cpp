@@ -214,6 +214,12 @@ void CEngineeringCulculatorView::BinOperation(CString oper, int operationNumber,
 			CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 			CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 			CString rez = Calculate(num1, oper, num2);
+			if (rez == L"inf")
+			{
+				MessageBox(L"Слишком большое число");
+				CEngineeringCulculatorView::OnBnClickedBtnclear();
+				return;
+			}
 			if (rez == L"Деление на ноль невозможно")
 			{
 				MessageBox(L"Деление на ноль невозможно");
@@ -333,7 +339,10 @@ void CEngineeringCulculatorView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
-	m_Number.SetWindowTextW(L"0");
+	CString tmp;
+	m_Number.GetWindowTextW(tmp);
+	if(tmp==L"")
+		m_Number.SetWindowTextW(L"0");
 }
 
 
@@ -571,7 +580,6 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 	}
 
 	if (!wasPushRightBracket && !wasPushAnotherOp) {
-		//GetDocument()->PushElement(currentStr, 1);
 		CString str;
 		m_Number.GetWindowTextW(str);
 		GetDocument()->PushElement(str, 1);
@@ -597,6 +605,12 @@ void CEngineeringCulculatorView::OnBnClickedBtneql()
 		num2 = GetDocument()->PopElement(Index)->getValue();
 		--Index;
 		rez = Calculate(num1, oper, num2);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		if (rez == L"Деление на ноль невозможно")
 		{
 			MessageBox(L"Деление на ноль невозможно");
@@ -661,7 +675,6 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 	}
 
 	if (!wasPushRightBracket && !wasPushAnotherOp) {
-		//GetDocument()->PushElement(currentStr, 1);
 		CString str;
 		m_Number.GetWindowTextW(str);
 		GetDocument()->PushElement(str, 1);
@@ -697,6 +710,12 @@ void CEngineeringCulculatorView::OnBnClickedRigthbracket()
 			num2 = GetDocument()->PopElement(Index)->getValue();
 			--Index;
 			rez= Calculate(num1, oper, num2);
+			if (rez == L"inf")
+			{
+				MessageBox(L"Слишком большое число");
+				CEngineeringCulculatorView::OnBnClickedBtnclear();
+				return;
+			}
 			if (rez == L"Деление на ноль невозможно")
 			{
 				MessageBox(L"Деление на ноль невозможно");
@@ -929,7 +948,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnreverse()
 	if (action)
 	{
 		PutAction();
-		//action = 0;
 	}
 	if (wasPushRightBracket || wasPushAnotherOp)
 	{
@@ -1055,7 +1073,13 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 		CString rez= Calculate(num,L"/",L"1");
-		if (rez == "Деление на ноль невозможно")
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
+		if (rez == L"Деление на ноль невозможно")
 		{
 			MessageBox(L"Деление на ноль невозможно");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
@@ -1148,7 +1172,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnconv()
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 		CString rez = Calculate(num, L"/", L"1");
-		if (rez == "Деление на ноль невозможно")
+		if (rez == L"Деление на ноль невозможно")
 		{
 			MessageBox(L"Деление на ноль невозможно");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
@@ -2035,6 +2059,9 @@ BOOL CEngineeringCulculatorView::PreTranslateMessage(MSG* pMsg)
 		if ((pMsg->wParam == 187 && !::GetAsyncKeyState(VK_SHIFT) )|| pMsg->wParam == 13) {
 			OnBnClickedBtneql();
 		}
+		if (pMsg->wParam == 110) {
+			OnBnClickedBtncom();
+		}
 		return TRUE;
 	}
 	else if (pMsg->message == WM_KEYUP)
@@ -2307,6 +2334,12 @@ void CEngineeringCulculatorView::OnBnClickedBtncube()
 		double Num = _wtof(num) * _wtof(num)* _wtof(num);
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		GetDocument()->PushElement(rez, 1);
 		isCommaInNumber = 1;
 		numberStr = rez;
@@ -2388,6 +2421,12 @@ void CEngineeringCulculatorView::OnBnClickedBtncube()
 		double Num = _wtof(num) * _wtof(num)* _wtof(num);
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		GetDocument()->PushElement(rez, 1);
 		isCommaInNumber = 1;
 
@@ -2552,6 +2591,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnln()
 		double Num = log(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 		numberStr = rez;
@@ -2635,6 +2680,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnln()
 		double Num = log(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 
@@ -2672,6 +2723,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnlog()
 		double Num = log10(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 		numberStr = rez;
@@ -2757,6 +2814,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnlog()
 		double Num = log10(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 
@@ -3379,6 +3442,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnpowe()
 		double Num = pow(M_E,_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 		numberStr = rez;
@@ -3460,6 +3529,12 @@ void CEngineeringCulculatorView::OnBnClickedBtnpowe()
 		double Num = pow(M_E, _wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
+		if (rez == L"inf")
+		{
+			MessageBox(L"Слишком большое число");
+			CEngineeringCulculatorView::OnBnClickedBtnclear();
+			return;
+		}
 		isCommaInNumber = 1;
 		GetDocument()->PushElement(rez, 1);
 

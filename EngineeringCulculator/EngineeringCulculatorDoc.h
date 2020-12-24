@@ -76,10 +76,10 @@ public:
 
 // Операции
 public:
-	void PushElement(CString Val, int WhatThis);
-	Element *PopElement(int index);
-	int getNumElements();
-	int getCountOfNumbers();
+	void PushElement(CString Val, int WhatThis);//Положить элемент на стек
+	Element *PopElement(int index);//Снять элемент со стека
+	int getNumElements();//Размер стека
+	int getCountOfNumbers();//Количество чисел до открывающей скобки
 // Переопределение
 public:
 	virtual BOOL OnNewDocument();
