@@ -74,6 +74,11 @@ CString Calculate(CString num1, CString oper, CString num2)
 	}
 	if (oper == L"^")
 	{
+		double ZelayaChast = 0;
+		if (modf(Num1, &ZelayaChast) != 0 && Num2<0)
+		{
+			return L"Недопустимый ввод";
+		}
 		str.Format(L"%f", pow(Num2,Num1));
 		return str;
 	}
@@ -84,14 +89,17 @@ CString Calculate(CString num1, CString oper, CString num2)
 	}
 	if (oper == L" yroot ")
 	{
-		if (fmod(Num1, 2) == 0 && Num2<0)
+		double ZelayaChast = 0;
+		if ((fmod(Num1, 2) == 0 || modf(1.0/Num1, &ZelayaChast) != 0 ) && Num2<0  )
 		{
 			return L"Недопустимый ввод";
 		}
+
 		if (Num1 == 0)
 		{
 			return L"Деление на ноль невозможно";
 		}
+
 		str.Format(L"%f", pow(Num2, 1.0/Num1));
 		return str;
 	}
@@ -177,6 +185,57 @@ void CEngineeringCulculatorView::PutAction()
 	{
 		GetDocument()->PushElement(L" yroot ", 2);//Кладем знак операии в стек
 		prior = 3;
+	}
+}
+
+void CEngineeringCulculatorView::BinOperation(CString oper, int operationNumber, int priorNumber)
+{
+	if (!wasPushRightBracket && !wasPushAnotherOp)
+	{
+		CString str;
+		m_Number.GetWindowTextW(str);
+		GetDocument()->PushElement(str, 1);
+		numberStr = str;
+		currentStr = str;
+		enterStr.Append(numberStr);
+	}
+	wasPushRightBracket = 0;
+	wasPushAnotherOp = 0;
+	enterStr.Append(oper);
+	action = operationNumber;//запоминаем операцию
+	m_Edit.SetWindowTextW(enterStr);
+
+	if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
+	{
+		if (prior >= priorNumber)
+		{
+			//считаем результат и его в стек
+			CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
+			CString rez = Calculate(num1, oper, num2);
+			if (rez == L"Деление на ноль невозможно")
+			{
+				MessageBox(L"Деление на ноль невозможно");
+				CEngineeringCulculatorView::OnBnClickedBtnclear();
+				return;
+			}
+			if (rez == L"Недопустимый ввод")
+			{
+				MessageBox(L"Недопустимый ввод");
+				CEngineeringCulculatorView::OnBnClickedBtnclear();
+				return;
+			}
+			GetDocument()->PushElement(rez, 1);
+			isCommaInNumber = 1;
+			numberStr = L"";
+			numberStr.Append(rez);
+			m_Number.SetWindowTextW(numberStr);
+		}
+	}
+	else
+	{
+		wasPushLeftBracket = 0;
 	}
 }
 
@@ -391,54 +450,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnplus()
 {
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		enterStr.Append(L"+");
-		action = 1;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{	
-			if (prior >= 1)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L"+",1,1);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -462,54 +474,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnminus()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		enterStr.Append(L"-");
-		action = 2;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 1)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L"-", 2, 1);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -533,54 +498,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnmultiply()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		enterStr.Append(L"*");
-		action = 3;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 2)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L"*", 3, 2);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -612,56 +530,9 @@ void CEngineeringCulculatorView::OnBnClickedBtndivide()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		enterStr.Append(L"/");
-		action = 4;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 2)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L"/", 4, 2);
 	}
-	else if (action)//можно без if что делать если произошла замена операции
+	else //что делать если произошла замена операции
 	{
 		int length = 0;
 		if (action == 1 || action == 2 || action == 3 || action == 4 || action == 5)
@@ -1989,54 +1860,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnpow()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		enterStr.Append(L"^");
-		action = 5;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 3)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L"^", 5, 3);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -2068,55 +1892,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnmod()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
-		enterStr.Append(L" mod ");
-		action = 6;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 3)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L" mod ", 6, 3);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -2128,7 +1904,6 @@ void CEngineeringCulculatorView::OnBnClickedBtnmod()
 		if (action == 7)
 			length = 7;
 		enterStr = enterStr.Mid(0, enterStr.GetLength() - length);
-		//enterStr.Append(L"*");
 		m_Edit.SetWindowTextW(enterStr);
 		action = 6;
 		if (prior <= 3)
@@ -2301,7 +2076,7 @@ void CEngineeringCulculatorView::OnBnClickedBtncuberoot()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = pow(_wtof(num), (1.0 / 3.0));
+		double Num = cbrt(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -2390,7 +2165,7 @@ void CEngineeringCulculatorView::OnBnClickedBtncuberoot()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		double Num = pow(_wtof(num),(1.0/3.0));
+		double Num = cbrt(_wtof(num));
 		CString rez;
 		rez.Format(L"%f", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -2631,55 +2406,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnyroot()
 	// TODO: добавьте свой код обработчика уведомлений
 	if (!action)
 	{
-		if (!wasPushRightBracket && !wasPushAnotherOp)
-		{
-			//GetDocument()->PushElement(currentStr, 1);
-			CString str;
-			m_Number.GetWindowTextW(str);
-			GetDocument()->PushElement(str, 1);
-			numberStr = str;
-			currentStr = str;
-			enterStr.Append(numberStr);
-		}
-		wasPushRightBracket = 0;
-		wasPushAnotherOp = 0;
-		//enterStr.Append(numberStr);
-		enterStr.Append(L" yroot ");
-		action = 7;//запоминаем операцию
-		m_Edit.SetWindowTextW(enterStr);
-
-		if (!wasPushLeftBracket && GetDocument()->getCountOfNumbers() != 1)
-		{
-			if (prior >= 3)
-			{
-				//считаем результат и его в стек
-				CString num1 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString oper = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString num2 = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-				CString rez = Calculate(num1, oper, num2);
-				if (rez == L"Недопустимый ввод")
-				{
-					MessageBox(L"Недопустимый ввод");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				if (rez == L"Деление на ноль невозможно")
-				{
-					MessageBox(L"Деление на ноль невозможно");
-					CEngineeringCulculatorView::OnBnClickedBtnclear();
-					return;
-				}
-				GetDocument()->PushElement(rez, 1);
-				isCommaInNumber = 1;
-				numberStr = L"";
-				numberStr.Append(rez);
-				m_Number.SetWindowTextW(numberStr);
-			}
-		}
-		else
-		{
-			wasPushLeftBracket = 0;
-		}
+		BinOperation(L" yroot ", 7, 3);
 	}
 	else //что делать если произошла замена операции
 	{
@@ -3058,7 +2785,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnint()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		int Num = (int)_wtof(num);
+		long Num = (long)_wtof(num);
 		CString rez;
 		rez.Format(L"%d", Num);
 		GetDocument()->PushElement(rez, 1);
@@ -3137,7 +2864,7 @@ void CEngineeringCulculatorView::OnBnClickedBtnint()
 		wasPushRightBracket = 0;
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
-		int Num = (int)_wtof(num);
+		long Num = (long)_wtof(num);
 		CString rez;
 		rez.Format(L"%d", Num);
 		GetDocument()->PushElement(rez, 1);
