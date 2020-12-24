@@ -1349,13 +1349,13 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 		CString rez= Fact(_wtof(num));
-		if (rez == "Слишком большое число")
+		if (rez == L"Слишком большое число")
 		{
 			MessageBox(L"Слишком большое число");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		if (rez == "Недопустимый ввод")
+		if (rez == L"Недопустимый ввод")
 		{
 			MessageBox(L"Недопустимый ввод");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
@@ -1440,13 +1440,13 @@ void CEngineeringCulculatorView::OnBnClickedBtnfact()
 
 		CString num = GetDocument()->PopElement(GetDocument()->getNumElements() - 1)->getValue();
 		CString rez =Fact(_wtof(num));
-		if (rez == "Слишком большое число")
+		if (rez == L"Слишком большое число")
 		{
 			MessageBox(L"Слишком большое число");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
 			return;
 		}
-		if (rez == "Недопустимый ввод")
+		if (rez == L"Недопустимый ввод")
 		{
 			MessageBox(L"Недопустимый ввод");
 			CEngineeringCulculatorView::OnBnClickedBtnclear();
