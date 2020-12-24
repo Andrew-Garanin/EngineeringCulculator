@@ -333,8 +333,6 @@ void CEngineeringCulculatorView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
-	if(GetDocument()->memory->value!=0)
-		m_IsMem.ShowWindow(SW_SHOW);//буква M слева от поля ввода
 	m_Number.SetWindowTextW(L"0");
 }
 
@@ -1975,6 +1973,8 @@ void CEngineeringCulculatorView::OnFileOpen()
 	// TODO: добавьте свой код обработчика команд
 	GetDocument()->OnNewDocument();//Необходимо для того, чтобы в документ можно было записать данные,
 	theApp.ResetFile();            //а затем загрузить их из того же документа
+	if (GetDocument()->memory->value != 0)
+		m_IsMem.ShowWindow(SW_SHOW);//буква M слева от поля ввода
 }
 
 /*Кажется нет никакого способа передать ключевые события в CFormView, 

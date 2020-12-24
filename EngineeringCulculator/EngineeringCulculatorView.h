@@ -38,7 +38,7 @@ public:
 public:
 	void BtnClick(CString number);//Функция, вызываемая при нажатии на цифру
 	void PutAction();//кладет знак операции в стек
-	void BinOperation(CString oper, int operationNumber, int priorNumber);
+	void BinOperation(CString oper, int operationNumber, int priorNumber);//вычисление выражения
 // Переопределение
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
